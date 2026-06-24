@@ -83,7 +83,7 @@ flowchart TB
 - `@fastify/rate-limit` (default 200 req/min)
 - `x-request-id` on every response
 
-Deploy to Render with `render.yaml` blueprint.
+Deploy the SaaS stack to your production host (Docker Compose locally, or any Node + Postgres provider).
 
 ## Multi-tenancy model
 
@@ -184,14 +184,14 @@ curl -X POST http://localhost:4000/v1/auth/register \
 docker compose up --build
 ```
 
-## Deployment (Render / production)
+## Deployment (production)
 
-| Component | Render type |
-|-----------|-------------|
-| api-gateway | Web Service (`0.0.0.0:$PORT`) |
-| Each microservice | Private Service (internal network) |
-| PostgreSQL | Render Managed Postgres |
-| Redis | Render Key Value |
+| Component | Host type |
+|-----------|-----------|
+| api-gateway | Public web service (`0.0.0.0:$PORT`) |
+| Each microservice | Private / internal network |
+| PostgreSQL | Managed Postgres |
+| Redis | Managed Redis or Key Value |
 
 Bind all HTTP services to `0.0.0.0:$PORT`. Use internal DNS for service-to-service calls from the gateway.
 
@@ -222,4 +222,4 @@ See `packages/database/prisma/schema.prisma` for the full schema including:
 
 ## What stays local-first in OSS
 
-The open-source GitHub Pages demo remains **fully offline** — no account required. The SaaS platform is an optional upgrade path for teams needing sync, admin, billing, and compliance.
+The open-source Cloudflare Pages demo remains **fully offline** — no account required. The SaaS platform is an optional upgrade path for teams needing sync, admin, billing, and compliance.

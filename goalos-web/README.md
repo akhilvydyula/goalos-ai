@@ -48,10 +48,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 npm run build
-npm start
 ```
 
-For [Render](https://render.com) or similar hosts, bind to `0.0.0.0:$PORT`.
+Static output is in `out/` — deployed automatically via Cloudflare Pages. See [Deployment](../docs/DEPLOYMENT.md).
 
 ## Screenshots & walkthrough
 

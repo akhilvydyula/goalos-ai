@@ -158,7 +158,7 @@ export function EnterpriseLanding() {
         <div className="mx-auto max-w-6xl px-6 py-16">
           <h2 className="text-xl font-semibold">Built for scale</h2>
           <p className="mt-2 max-w-2xl text-sm text-zinc-500">
-            Microservices architecture, Postgres, Docker, Render blueprint — open source on GitHub.
+            Microservices architecture, Postgres, Docker — open source on GitHub.
           </p>
           <ul className="mt-8 grid gap-3 sm:grid-cols-2">
             {[

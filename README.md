@@ -10,18 +10,15 @@
 
 <p align="center">
   <a href="https://github.com/akhilvydyula/oss-goalos-ai/actions/workflows/ci.yml"><img src="https://github.com/akhilvydyula/oss-goalos-ai/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://akhilvydyula.github.io/oss-goalos-ai/"><img src="https://img.shields.io/badge/demo-live-2BE7A8?style=flat&logo=github" alt="Live Demo" /></a>
+  <img src="https://img.shields.io/badge/deploy-Cloudflare%20Pages-F38020?style=flat&logo=cloudflare" alt="Cloudflare Pages" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
   <a href="https://github.com/akhilvydyula/oss-goalos-ai/issues"><img src="https://img.shields.io/github/issues/akhilvydyula/oss-goalos-ai" alt="Issues" /></a>
 </p>
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> ·
-  <a href="https://akhilvydyula.github.io/oss-goalos-ai/">Live Demo</a> ·
-  <a href="https://akhilvydyula.github.io/oss-goalos-ai/web/">Web</a> ·
-  <a href="https://akhilvydyula.github.io/oss-goalos-ai/mobile/">Mobile</a> ·
   <a href="docs/ARCHITECTURE.md">Architecture</a> ·
-  <a href="docs/DEPLOYMENT.md">Deploy</a> ·
+  <a href="docs/DEPLOYMENT.md">Deploy (Cloudflare)</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
@@ -103,7 +100,7 @@ Goal Setup → Productivity DNA → Usage Tracking → Alignment Score
 |-----|-------------|
 | [Getting Started](./docs/GETTING_STARTED.md) | Install & run web + Android |
 | [Architecture](./docs/ARCHITECTURE.md) | System design, data flow, scoring |
-| [Deployment](./docs/DEPLOYMENT.md) | Render, Vercel, Docker, releases |
+| [Deployment](./docs/DEPLOYMENT.md) | Cloudflare Pages, Android releases |
 | [Contributing](./CONTRIBUTING.md) | How to contribute |
 | [Code of Conduct](./CODE_OF_CONDUCT.md) | Community guidelines |
 | [Security](./SECURITY.md) | Vulnerability reporting |
@@ -113,7 +110,7 @@ Goal Setup → Productivity DNA → Usage Tracking → Alignment Score
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
 | [**CI**](./.github/workflows/ci.yml) | Push / PR to `main` | Web lint + build, Android APK |
-| [**Pages**](./.github/workflows/pages.yml) | Push to `main` | Deploy web demo to GitHub Pages |
+| [**Cloudflare Pages**](./.github/workflows/cloudflare-pages.yml) | Push to `main` (optional) | Deploy web to Cloudflare |
 | [**Release**](./.github/workflows/release.yml) | Tag `v*.*.*` | GitHub Release + APK artifact |
 
 ## 🤝 Contributing

@@ -13,14 +13,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const assetPrefix = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
 export const metadata: Metadata = {
   title: "GoalOS AI — Turn screen time into goal time",
   description:
     "AI-powered productivity operating system that helps you align mobile usage with your goals.",
-  manifest: `${assetPrefix}/manifest.json`,
-  icons: { icon: `${assetPrefix}/icon.svg`, apple: `${assetPrefix}/icon.svg` },
+  manifest: "/manifest.json",
+  icons: { icon: "/icon.svg", apple: "/icon.svg" },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

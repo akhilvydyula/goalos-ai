@@ -1,6 +1,5 @@
-# Fast static deploy — no cold starts (unlike Render free web services).
-# One-time setup: add CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID repo secrets.
-# https://developers.cloudflare.com/pages/configuration/github-integration/
+# Fast static deploy to Cloudflare Pages.
+# Optional: set ENABLE_CLOUDFLARE_PAGES=true and add CF secrets (see docs/DEPLOYMENT.md).
 
 name: Deploy Web to Cloudflare Pages
 

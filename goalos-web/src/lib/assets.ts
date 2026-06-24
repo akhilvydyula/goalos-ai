@@ -1,7 +1,6 @@
-/** Public asset path — respects GitHub Pages basePath at build time. */
+/** Public asset path for static deploy (Cloudflare Pages). */
 export function asset(path: string): string {
-  const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+  return path.startsWith("/") ? path : `/${path}`;
 }
 
 export const MEDIA = {
