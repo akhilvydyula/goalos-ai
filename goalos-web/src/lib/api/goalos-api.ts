@@ -92,4 +92,28 @@ export const goalosApi = {
       body: JSON.stringify({ message }),
     });
   },
+
+  inviteMember(token: string, email: string, role: "ADMIN" | "MEMBER" | "VIEWER" = "MEMBER") {
+    return request<{ inviteId: string; inviteToken: string }>("/v1/orgs/invites", {
+      method: "POST",
+      token,
+      body: JSON.stringify({ email, role }),
+    });
+  },
+
+  getAuditLogs(token: string, limit = 50) {
+    return request<unknown[]>(`/v1/admin/audit-logs?limit=${limit}`, { token });
+  },
+
+  exportData(token: string) {
+    return request<unknown>("/v1/compliance/export", { token });
+  },
+
+  getBillingStatus(token: string) {
+    return request<{ plan: string; limits: unknown; usage: unknown }>("/v1/billing/status", { token });
+  },
+
+  getOpenApiSpec() {
+    return request<unknown>("/v1/openapi.json");
+  },
 };

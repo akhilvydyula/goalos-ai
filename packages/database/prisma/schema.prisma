@@ -36,6 +36,9 @@ model Organization {
   updatedAt DateTime @updatedAt
 
   members       OrganizationMember[]
+  invites       OrgInvite[]
+  apiKeys       ApiKey[]
+  ssoConfig     SsoConfig?
   goals         Goal[]
   trackedApps   TrackedApp[]
   usageEvents   UsageEvent[]
@@ -252,4 +255,55 @@ model AuditLog {
 
   @@index([orgId, createdAt])
   @@map("audit_logs")
+}
+
+model OrgInvite {
+  id         String     @id @default(uuid())
+  orgId      String
+  email      String
+  role       MemberRole @default(MEMBER)
+  tokenHash  String     @unique
+  invitedBy  String
+  expiresAt  DateTime
+  acceptedAt DateTime?
+  createdAt  DateTime   @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, email])
+  @@map("org_invites")
+}
+
+model ApiKey {
+  id         String    @id @default(uuid())
+  orgId      String
+  name       String
+  keyPrefix  String
+  keyHash    String    @unique
+  createdBy  String
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@map("api_keys")
+}
+
+model SsoConfig {
+  id           String   @id @default(uuid())
+  orgId        String   @unique
+  provider     String
+  issuerUrl    String
+  clientId     String
+  clientSecret String?
+  enabled      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@map("sso_configs")
 }

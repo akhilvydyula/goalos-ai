@@ -9,8 +9,11 @@ import {
   signRefreshToken,
   slugify,
   verifyRefreshToken,
+  writeAudit,
+  auditContext,
 } from "@goalos/shared";
 import Fastify from "fastify";
+import { registerEnterpriseRoutes } from "./enterprise-routes.js";
 
 const PORT = Number(process.env.PORT ?? 4001);
 const JWT_SECRET = getEnv("JWT_SECRET", "dev-secret-change-me");
@@ -34,10 +37,9 @@ function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
 
-async function audit(orgId: string, userId: string | null, action: string, resource: string) {
-  await prisma.auditLog.create({
-    data: { orgId, userId, action, resource },
-  });
+async function audit(orgId: string, userId: string | null, action: string, resource: string, request?: { ip?: string; headers: Record<string, unknown> }) {
+  const ctx = request ? auditContext(request) : {};
+  await writeAudit(prisma, { orgId, userId, action, resource, ...ctx });
 }
 
 const app = Fastify({ logger: true });
@@ -102,7 +104,7 @@ app.post("/auth/register", async (request, reply) => {
     },
   });
 
-  await audit(membership.orgId, user.id, "user.register", "user");
+  await audit(membership.orgId, user.id, "user.register", "user", request);
 
   return reply.code(201).send({
     accessToken,
@@ -229,6 +231,14 @@ app.get("/orgs/members", { preHandler: authenticate }, async (request) => {
     include: { user: { select: { id: true, email: true, displayName: true } } },
     orderBy: { joinedAt: "asc" },
   });
+});
+
+registerEnterpriseRoutes(app, {
+  prisma,
+  jwtSecret: JWT_SECRET,
+  hashPassword,
+  verifyPassword,
+  authenticate,
 });
 
 app.listen({ port: PORT, host: "0.0.0.0" }).catch((err) => {

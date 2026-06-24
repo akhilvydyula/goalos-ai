@@ -1,0 +1,107 @@
+# GoalOS Enterprise — Render Blueprint (Atopush-ready)
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: goalos-api-gateway
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run saas:build && npm run build --workspace=@goalos/api-gateway
+    startCommand: npm run start --workspace=@goalos/api-gateway
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: AUTH_SERVICE_URL
+        fromService:
+          name: goalos-auth-service
+          type: pserv
+          property: hostport
+      - key: GOALS_SERVICE_URL
+        fromService:
+          name: goalos-goals-service
+          type: pserv
+          property: hostport
+      - key: USAGE_SERVICE_URL
+        fromService:
+          name: goalos-usage-service
+          type: pserv
+          property: hostport
+      - key: COACH_SERVICE_URL
+        fromService:
+          name: goalos-coach-service
+          type: pserv
+          property: hostport
+      - key: INSIGHTS_SERVICE_URL
+        fromService:
+          name: goalos-insights-service
+          type: pserv
+          property: hostport
+      - key: CORS_ORIGIN
+        sync: false
+      - key: RATE_LIMIT_MAX
+        value: "300"
+
+  - type: pserv
+    name: goalos-auth-service
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run saas:build && npm run build --workspace=@goalos/auth-service
+    startCommand: npm run start --workspace=@goalos/auth-service
+    envVars:
+      - fromGroup: goalos-saas
+
+  - type: pserv
+    name: goalos-goals-service
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run saas:build && npm run build --workspace=@goalos/goals-service
+    startCommand: npm run start --workspace=@goalos/goals-service
+    envVars:
+      - fromGroup: goalos-saas
+
+  - type: pserv
+    name: goalos-usage-service
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run saas:build && npm run build --workspace=@goalos/usage-service
+    startCommand: npm run start --workspace=@goalos/usage-service
+    envVars:
+      - fromGroup: goalos-saas
+
+  - type: pserv
+    name: goalos-coach-service
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run saas:build && npm run build --workspace=@goalos/coach-service
+    startCommand: npm run start --workspace=@goalos/coach-service
+    envVars:
+      - fromGroup: goalos-saas
+
+  - type: pserv
+    name: goalos-insights-service
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run saas:build && npm run build --workspace=@goalos/insights-service
+    startCommand: npm run start --workspace=@goalos/insights-service
+    envVars:
+      - fromGroup: goalos-saas
+
+databases:
+  - name: goalos-postgres
+    plan: basic_256mb
+    databaseName: goalos
+    user: goalos
+
+envVarGroups:
+  - name: goalos-saas
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: goalos-postgres
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production

@@ -1,6 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { verifyAccessToken } from "./auth.js";
 import type { JwtPayload } from "./types.js";
+import { PermissionError, requirePermission, type Permission } from "./rbac.js";
 
 export function getEnv(name: string, fallback?: string): string {
   const value = process.env[name] ?? fallback;
@@ -32,6 +33,22 @@ export function authPreHandler(jwtSecret: string) {
       request.user = verifyAccessToken(header.slice(7), jwtSecret);
     } catch {
       return reply.code(401).send({ error: "Invalid or expired token" });
+    }
+  };
+}
+
+export function permissionPreHandler(permission: Permission) {
+  return async function authorize(request: FastifyRequest, reply: FastifyReply) {
+    if (!request.user) {
+      return reply.code(401).send({ error: "Unauthorized" });
+    }
+    try {
+      requirePermission(request.user.role, permission);
+    } catch (err) {
+      if (err instanceof PermissionError) {
+        return reply.code(403).send({ error: err.message, code: err.code });
+      }
+      throw err;
     }
   };
 }

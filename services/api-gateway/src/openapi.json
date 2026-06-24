@@ -1,0 +1,40 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GoalOS Enterprise API",
+    "version": "0.2.0",
+    "description": "Multi-tenant productivity SaaS — auth, goals, usage, coach, insights, compliance."
+  },
+  "servers": [{ "url": "/v1" }],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  },
+  "paths": {
+    "/auth/register": { "post": { "summary": "Register user + organization" } },
+    "/auth/login": { "post": { "summary": "Login" } },
+    "/auth/refresh": { "post": { "summary": "Refresh access token" } },
+    "/auth/switch-org": { "post": { "summary": "Switch active organization", "security": [{ "bearerAuth": [] }] } },
+    "/orgs/me": { "get": { "summary": "Current organization", "security": [{ "bearerAuth": [] }] } },
+    "/orgs/members": { "get": { "summary": "List members", "security": [{ "bearerAuth": [] }] } },
+    "/orgs/invites": { "post": { "summary": "Invite member", "security": [{ "bearerAuth": [] }] } },
+    "/orgs/invites/accept": { "post": { "summary": "Accept invite (public)" } },
+    "/admin/audit-logs": { "get": { "summary": "Audit trail", "security": [{ "bearerAuth": [] }] } },
+    "/api-keys": {
+      "get": { "summary": "List API keys", "security": [{ "bearerAuth": [] }] },
+      "post": { "summary": "Create API key", "security": [{ "bearerAuth": [] }] }
+    },
+    "/billing/status": { "get": { "summary": "Plan + usage", "security": [{ "bearerAuth": [] }] } },
+    "/billing/checkout": { "post": { "summary": "Upgrade plan", "security": [{ "bearerAuth": [] }] } },
+    "/compliance/export": { "get": { "summary": "GDPR data export", "security": [{ "bearerAuth": [] }] } },
+    "/sso/config": {
+      "get": { "summary": "SSO config (Enterprise)", "security": [{ "bearerAuth": [] }] },
+      "put": { "summary": "Configure SSO", "security": [{ "bearerAuth": [] }] }
+    },
+    "/goals/active": { "get": { "summary": "Active goal", "security": [{ "bearerAuth": [] }] } },
+    "/usage/events": { "post": { "summary": "Ingest usage batch", "security": [{ "bearerAuth": [] }] } },
+    "/coach/chat": { "post": { "summary": "Coach chat", "security": [{ "bearerAuth": [] }] } },
+    "/insights/score": { "get": { "summary": "Alignment score", "security": [{ "bearerAuth": [] }] } }
+  }
+}

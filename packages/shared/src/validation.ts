@@ -56,3 +56,40 @@ export const intentCheckInSchema = z.object({
   reason: z.string().min(1).max(80),
   aligned: z.boolean(),
 });
+
+export const inviteMemberSchema = z.object({
+  email: z.string().email(),
+  role: z.enum(["ADMIN", "MEMBER", "VIEWER"]).default("MEMBER"),
+});
+
+export const acceptInviteSchema = z.object({
+  token: z.string().min(16),
+  password: z.string().min(8).max(128).optional(),
+  displayName: z.string().min(1).max(80).optional(),
+});
+
+export const updateMemberRoleSchema = z.object({
+  role: z.enum(["ADMIN", "MEMBER", "VIEWER"]),
+});
+
+export const createApiKeySchema = z.object({
+  name: z.string().min(1).max(80),
+  expiresInDays: z.number().int().min(1).max(365).optional(),
+});
+
+export const ssoConfigSchema = z.object({
+  provider: z.enum(["oidc", "saml"]),
+  issuerUrl: z.string().url(),
+  clientId: z.string().min(1),
+  clientSecret: z.string().min(1).optional(),
+  enabled: z.boolean().default(false),
+});
+
+export const switchOrgSchema = z.object({
+  orgId: z.string().uuid(),
+});
+
+export const billingCheckoutSchema = z.object({
+  plan: z.enum(["PRO", "ENTERPRISE"]),
+  seats: z.number().int().min(1).max(500).optional(),
+});

@@ -16,3 +16,5 @@ export * from "./scoring.js";
 export * from "./auth.js";
 export * from "./validation.js";
 export * from "./server.js";
+export * from "./rbac.js";
+export * from "./audit.js";

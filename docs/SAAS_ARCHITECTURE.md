@@ -47,12 +47,43 @@ flowchart TB
 
 | Service | Owns | Port |
 |---------|------|------|
-| **api-gateway** | Routing, JWT validation, rate limits (future) | 4000 |
-| **auth-service** | Users, orgs, memberships, RBAC, refresh tokens, audit | 4001 |
+| **api-gateway** | Routing, JWT validation, CORS, helmet, rate limits, OpenAPI | 4000 |
+| **auth-service** | Users, orgs, RBAC, invites, API keys, SSO, billing, audit, compliance | 4001 |
 | **goals-service** | Goals, roadmaps, milestones | 4002 |
 | **usage-service** | Usage events, tracked apps (ingestion from Android/web) | 4003 |
 | **coach-service** | Coach chat, recommendations (rule-based MVP; LLM-ready) | 4004 |
 | **insights-service** | Alignment score, snapshots, weekly reports, sprints, intent gates | 4005 |
+
+## Enterprise capabilities (v0.2)
+
+| Capability | Endpoint | Roles |
+|------------|----------|-------|
+| Member invites | `POST /v1/orgs/invites` | ADMIN, OWNER |
+| Role management | `PATCH /v1/orgs/members/:id/role` | ADMIN, OWNER |
+| Audit trail | `GET /v1/admin/audit-logs` | ADMIN, OWNER |
+| GDPR export | `GET /v1/compliance/export` | ADMIN, OWNER |
+| Delete request | `POST /v1/compliance/delete-request` | OWNER |
+| API keys | `POST/GET/DELETE /v1/api-keys` | ADMIN, OWNER |
+| SSO (OIDC/SAML config) | `GET/PUT /v1/sso/config` | ENTERPRISE plan |
+| Billing | `GET /v1/billing/status`, `POST /v1/billing/checkout` | ADMIN, OWNER |
+| OpenAPI spec | `GET /v1/openapi.json` | Public |
+
+### Plan limits
+
+| Plan | Seats | API keys | SSO | Audit retention |
+|------|-------|----------|-----|-----------------|
+| FREE | 3 | 2 | No | 30 days |
+| PRO | 25 | 10 | No | 90 days |
+| ENTERPRISE | 500 | 100 | Yes | 365 days |
+
+### Gateway hardening
+
+- `@fastify/helmet` security headers
+- `@fastify/cors` configurable origins
+- `@fastify/rate-limit` (default 200 req/min)
+- `x-request-id` on every response
+
+Deploy to Render with `render.yaml` blueprint.
 
 ## Multi-tenancy model
 
