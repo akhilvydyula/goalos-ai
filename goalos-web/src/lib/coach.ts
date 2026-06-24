@@ -172,6 +172,16 @@ export function openingMessages(
 export function suggestedPrompts(state: UserState, scoreTotal?: number): string[] {
   const lastScore = scoreTotal ?? state.weeklyHistory[state.weeklyHistory.length - 1];
   const scoreLabel = lastScore !== undefined ? String(lastScore) : "your current";
+
+  if (state.goal?.template === "software-interview") {
+    return [
+      "What DSA pattern should I practice today?",
+      "How do I approach two-pointer problems?",
+      "Explain dynamic programming for interviews",
+      `Why is my score ${scoreLabel} today?`,
+    ];
+  }
+
   return [
     "What should I do tomorrow to improve my score?",
     `Why is my score ${scoreLabel} today?`,
@@ -233,6 +243,17 @@ export function replyTo(
   }
   if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
     return "Hey — I'm your GoalOS coach. Ask me about your score, tomorrow's plan, night scrolling, or tap a suggested action below.";
+  }
+  if (
+    state.goal?.template === "software-interview" &&
+    (msg.includes("dsa") ||
+      msg.includes("leetcode") ||
+      msg.includes("pattern") ||
+      msg.includes("two pointer") ||
+      msg.includes("dynamic programming") ||
+      msg.includes("dp"))
+  ) {
+    return `Open DSA Studio in the Goals tab for today's curated problem, hints, and a timed sprint. ${coach.nextAction} Focus one pattern per session — mastery beats volume.`;
   }
   return `${coach.nextAction}\n\n${coach.reminder}`;
 }

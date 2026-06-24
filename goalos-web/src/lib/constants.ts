@@ -120,3 +120,15 @@ export const PRIVACY_PROMISE =
   "We do not read your messages, typed text, photos, calls, or private app content. We only analyze approved usage patterns to help you reach your goals.";
 
 export const TAGLINE = "Turn screen time into goal time.";
+export const SUBTAGLINE =
+  "Your phone is not the problem. Unconscious time is the problem.";
+export const PRODUCT_PROMISE =
+  "Know where your time goes. Know who you are becoming.";
+
+export const COMMUNITY_CHALLENGES = [
+  "7-Day Goal Alignment Sprint",
+  "No Night Scrolling Challenge",
+  "30-Day Job Prep Marathon",
+  "Founder Deep Work League",
+  "AI Learning Sprint",
+] as const;

@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #06070d;
-  --foreground: #f4f4f5;
-  --card: rgba(255, 255, 255, 0.04);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --accent-green: #2be7a8;
-  --accent-blue: #68a7ff;
-  --accent-soft: rgba(43, 231, 168, 0.12);
-  --success: #2be7a8;
-  --warning: #fbbf24;
-  --danger: #fb7185;
+  --background: #09090b;
+  --surface: #111113;
+  --surface-raised: #18181b;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --accent: #22c55e;
+  --accent-muted: rgba(34, 197, 94, 0.12);
+  --accent-blue: #3b82f6;
+  --success: #22c55e;
+  --warning: #eab308;
+  --danger: #ef4444;
+  --radius: 0.625rem;
+  --radius-lg: 0.75rem;
 }
 
 @theme inline {
@@ -36,10 +41,10 @@ body {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Locks demo apps to one screen — scroll happens inside panels */
 .goalos-app-viewport {
   height: 100dvh;
   max-height: 100dvh;
@@ -47,94 +52,116 @@ body {
 }
 
 .goalos-page-bg {
-  background:
-    radial-gradient(ellipse 70% 45% at 15% 0%, rgba(43, 231, 168, 0.12), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 85% 10%, rgba(104, 167, 255, 0.14), transparent 50%),
-    radial-gradient(ellipse 50% 30% at 50% 100%, rgba(43, 231, 168, 0.06), transparent),
-    var(--background);
+  background: var(--background);
+}
+
+.goalos-app-shell {
+  background: var(--background);
+}
+
+.goalos-hero-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.goalos-hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 20% 0%, rgba(34, 197, 94, 0.08), transparent 60%);
+  pointer-events: none;
 }
 
 .goalos-card {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
-  border: 1px solid var(--card-border);
-  border-radius: 1.25rem;
-  backdrop-filter: blur(16px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 .goalos-card-glow {
-  box-shadow: 0 0 0 1px rgba(43, 231, 168, 0.08), 0 8px 32px rgba(0, 0, 0, 0.35);
+  box-shadow: none;
+}
+
+.goalos-card-elevated {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
 }
 
 .goalos-gradient-text {
-  background: linear-gradient(135deg, #2be7a8 0%, #68a7ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--foreground);
+  background: none;
+  -webkit-text-fill-color: unset;
 }
 
 .goalos-btn-primary {
-  background: linear-gradient(135deg, #2be7a8 0%, #1bc98a 50%, #68a7ff 100%);
-  color: #06070d;
+  background: var(--accent);
+  color: #052e16;
   font-weight: 600;
-  border-radius: 1rem;
-  transition: opacity 0.2s, transform 0.15s;
+  border-radius: var(--radius);
+  border: none;
+  transition: background 0.15s ease, opacity 0.15s ease;
 }
 
 .goalos-btn-primary:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
+  background: #16a34a;
+  opacity: 1;
+  transform: none;
 }
 
 .goalos-btn-primary:active {
-  transform: translateY(0);
+  opacity: 0.92;
 }
 
 .goalos-btn-ghost {
   background: transparent;
   border: none;
   font-weight: 500;
-  transition: color 0.15s, opacity 0.15s;
+  transition: color 0.15s, background 0.15s;
 }
 
 .goalos-btn-ghost:hover {
-  opacity: 0.85;
+  opacity: 1;
 }
 
 .goalos-btn-secondary {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #f4f4f5;
-  font-weight: 600;
-  border-radius: 1rem;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  color: var(--foreground);
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .goalos-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(43, 231, 168, 0.25);
-  transform: translateY(-1px);
+  background: #1f1f23;
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: none;
 }
 
 .goalos-chip {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
   border-radius: 9999px;
-  padding: 0.45rem 0.8rem;
-  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.25;
   color: #d4d4d8;
-  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 .goalos-chip:hover {
-  background: rgba(43, 231, 168, 0.12);
-  border-color: rgba(43, 231, 168, 0.28);
-  color: #f4f4f5;
-  transform: translateY(-1px);
+  background: var(--accent-muted);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: var(--foreground);
+  transform: none;
 }
 
 .goalos-chip:active {
-  transform: translateY(0);
+  transform: none;
 }
 
 .goalos-phone-frame {
@@ -158,10 +185,6 @@ body {
     box-shadow: none;
     max-height: 100dvh;
   }
-
-  .goalos-page-bg {
-    background: var(--background);
-  }
 }
 
 .goalos-web-frame {
@@ -176,53 +199,35 @@ body {
   .goalos-phone-frame {
     height: min(844px, 90dvh);
     max-height: min(844px, 90dvh);
-    border-radius: 2.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow:
-      0 0 0 6px rgba(0, 0, 0, 0.35),
-      0 24px 80px rgba(0, 0, 0, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
   }
 }
 
 .goalos-nav-glass {
-  background: rgba(6, 7, 13, 0.88);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
   flex-shrink: 0;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .coach-bubble-coach {
-  background: linear-gradient(145deg, rgba(43, 231, 168, 0.12), rgba(104, 167, 255, 0.08));
-  border: 1px solid rgba(43, 231, 168, 0.18);
-  border-radius: 1.125rem 1.125rem 1.125rem 0.25rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem 0.75rem 0.75rem 0.25rem;
 }
 
 .coach-bubble-user {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.125rem 1.125rem 0.25rem 1.125rem;
-}
-
-@keyframes pulse-soft {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.65;
-  }
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 2s ease-in-out infinite;
+  background: var(--accent-muted);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 0.75rem 0.75rem 0.25rem 0.75rem;
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -231,7 +236,7 @@ body {
 }
 
 .animate-fade-up {
-  animation: fade-up 0.35s ease-out forwards;
+  animation: fade-up 0.25s ease-out forwards;
 }
 
 @keyframes score-ring {
@@ -241,53 +246,65 @@ body {
 }
 
 .score-ring-animate {
-  animation: score-ring 1.2s ease-out forwards;
-}
-
-.goalos-ambient {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.goalos-ambient::before,
-.goalos-ambient::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-}
-
-.goalos-ambient::before {
-  width: 280px;
-  height: 280px;
-  top: -80px;
-  left: -60px;
-  background: rgba(43, 231, 168, 0.08);
-}
-
-.goalos-ambient::after {
-  width: 240px;
-  height: 240px;
-  top: 20%;
-  right: -80px;
-  background: rgba(104, 167, 255, 0.1);
+  animation: score-ring 1s ease-out forwards;
 }
 
 .goalos-sidebar {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+.goalos-nav-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.goalos-nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #e4e4e7;
+}
+
+.goalos-nav-item-active {
+  background: var(--accent-muted);
+  color: var(--accent);
+  box-shadow: inset 3px 0 0 0 var(--accent);
+}
+
+.goalos-progress {
+  height: 0.375rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.goalos-progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+
+.goalos-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.02em;
 }
 
 .goalos-tilt-3d {
-  transform-style: preserve-3d;
-  will-change: transform;
+  transform: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .goalos-tilt-3d {
-    transform: none !important;
+  .animate-fade-up,
+  .score-ring-animate {
+    animation: none;
   }
 }

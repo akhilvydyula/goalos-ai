@@ -1,5 +1,6 @@
 import type { UserState, ScoreBreakdown, WeeklyReport } from "@/lib/types";
 import { formatMinutes } from "@/lib/demo-data";
+import { COMMUNITY_CHALLENGES } from "@/lib/constants";
 import { WeeklyIdentityCard } from "@/components/ui/WeeklyIdentityCard";
 
 export function InsightsTab({
@@ -66,6 +67,21 @@ export function InsightsTab({
           <p className="text-zinc-500">Risk window</p>
           <p className="font-medium text-amber-400">{weeklyReport.riskWindow}</p>
         </div>
+      </div>
+
+      <div className="goalos-card p-4">
+        <h3 className="text-sm font-medium text-zinc-300">Community challenges</h3>
+        <p className="mt-1 text-xs text-zinc-500">Join a sprint to build consistency</p>
+        <ul className="mt-3 space-y-2">
+          {COMMUNITY_CHALLENGES.map((c) => (
+            <li
+              key={c}
+              className="rounded-lg border border-white/[0.06] px-3 py-2 text-sm text-zinc-400"
+            >
+              {c}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

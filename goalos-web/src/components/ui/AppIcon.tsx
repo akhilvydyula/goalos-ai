@@ -31,7 +31,7 @@ export function AppIcon({ name, size = "md" }: { name: string; size?: "sm" | "md
 
   return (
     <div
-      className={`flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br font-bold ring-1 ring-white/10 ${style.bg} ${style.text} ${dim}`}
+      className={`flex shrink-0 items-center justify-center rounded-lg bg-zinc-800 font-semibold text-zinc-300 ring-1 ring-white/[0.06] ${dim}`}
     >
       {style.abbr}
     </div>
@@ -39,9 +39,7 @@ export function AppIcon({ name, size = "md" }: { name: string; size?: "sm" | "md
 }
 
 export function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">{children}</p>
-  );
+  return <p className="goalos-eyebrow">{children}</p>;
 }
 
 export function ScoreLabel({ score }: { score: number }) {

@@ -21,6 +21,7 @@ export interface AgentToolCall {
 export interface SprintPrefill {
   title: string;
   durationMinutes: number;
+  dsaProblemId?: string;
 }
 
 export interface AgentActionResult {

@@ -3,6 +3,7 @@ import { formatMinutes } from "@/lib/demo-data";
 import { IDENTITY_DESCRIPTIONS } from "@/lib/constants";
 import { AppIcon, SectionLabel } from "@/components/ui/AppIcon";
 import { roadmapSummary } from "@/lib/agent";
+import { DsaStudio } from "@/components/dsa/DsaStudio";
 import { Target, Map, Plus } from "lucide-react";
 
 const CLASS_OPTIONS: { value: AppClassification; label: string; color: string }[] = [
@@ -19,14 +20,26 @@ export function GoalTab({
   onClassify,
   onLogUsage,
   onIntentGate,
+  onStartSprint,
 }: {
   state: UserState;
   onClassify: (appId: string, c: AppClassification) => void;
   onLogUsage: (appId: string, minutes: number) => void;
   onIntentGate: (appId: string) => void;
+  onStartSprint?: (title: string, minutes: number, problemId?: string) => void;
 }) {
+  const isDsaGoal = state.goal?.template === "software-interview";
+
   return (
     <div className="space-y-5">
+      {isDsaGoal && onStartSprint && (
+        <DsaStudio
+          state={state}
+          onStartSprint={(title, minutes, problemId) => {
+            onStartSprint(title, minutes, problemId);
+          }}
+        />
+      )}
       {!state.demoMode ? (
         <div className="goalos-card border-[#2be7a8]/20 bg-[#2be7a8]/5 p-4">
           <p className="text-sm font-medium text-[#2be7a8]">Log your screen time</p>

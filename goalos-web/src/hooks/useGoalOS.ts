@@ -20,9 +20,12 @@ import {
   type SprintPrefill,
 } from "@/lib/agent";
 import { addAppMinutes, primaryGoalAppId, syncRoadmapCompletion, withScoreSnapshot } from "@/lib/state-sync";
+import { markProblemSolved, loadDsaProgress, saveDsaProgress } from "@/lib/dsa";
 import { sprintScoreBoost } from "@/lib/app-metrics";
+import { goalosApi } from "@/lib/api/goalos-api";
 
-export function useGoalOS() {
+export function useGoalOS(options?: { apiToken?: string | null }) {
+  const apiToken = options?.apiToken ?? null;
   const [state, setState] = useState<UserState | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>("today");
   const [intentAppId, setIntentAppId] = useState<string | null>(null);
@@ -147,7 +150,15 @@ export function useGoalOS() {
 
       let replyText: string;
 
-      if (webLLM.isReady) {
+      if (apiToken) {
+        try {
+          const res = await goalosApi.coachChat(apiToken, trimmed);
+          replyText = res.message.text;
+        } catch (err) {
+          console.warn("[GoalOS] API coach failed, using local coach:", err);
+          replyText = fallbackCoachReply(trimmed, state, score, coach);
+        }
+      } else if (webLLM.isReady) {
         try {
           replyText = await generateCoachReplyWithWebLLM({
             state,
@@ -172,7 +183,7 @@ export function useGoalOS() {
       applyAgentSideEffects(merged);
       setCoachThinking(false);
     },
-    [state, score, coach, coachMessages, coachThinking, webLLM, applyAgentSideEffects]
+    [state, score, coach, coachMessages, coachThinking, webLLM, applyAgentSideEffects, apiToken]
   );
 
   const handleCoachAction = useCallback(
@@ -239,6 +250,11 @@ export function useGoalOS() {
   const completeFocusSprint = useCallback(
     (title: string, durationMinutes: number) => {
       if (!state) return;
+      const dsaProblemId = sprintPrefill?.dsaProblemId;
+      if (dsaProblemId) {
+        const dsaProgress = markProblemSolved(loadDsaProgress(), dsaProblemId);
+        saveDsaProgress(dsaProgress);
+      }
       const sprint = {
         id: `sprint-${Date.now()}`,
         title,
@@ -261,7 +277,7 @@ export function useGoalOS() {
       persist(nextState);
       closeFocusSprint();
     },
-    [state, persist, closeFocusSprint]
+    [state, persist, closeFocusSprint, sprintPrefill?.dsaProblemId]
   );
 
   return {

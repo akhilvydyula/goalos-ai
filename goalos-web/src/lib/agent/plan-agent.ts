@@ -11,10 +11,10 @@ const PLAN_TEMPLATES: Record<string, { weeks: { title: string; minutesPerDay: nu
   },
   "software-interview": {
     weeks: [
-      { title: "Arrays, strings, two pointers", minutesPerDay: 60 },
-      { title: "Trees, graphs, BFS/DFS", minutesPerDay: 75 },
-      { title: "Dynamic programming patterns", minutesPerDay: 90 },
-      { title: "System design + behavioral prep", minutesPerDay: 90 },
+      { title: "Arrays, hashing, two pointers & sliding window", minutesPerDay: 60 },
+      { title: "Trees, graphs, BFS/DFS & heaps", minutesPerDay: 75 },
+      { title: "DP, backtracking & intervals", minutesPerDay: 90 },
+      { title: "System design mocks + mixed review", minutesPerDay: 90 },
     ],
   },
   "founder-mode": {

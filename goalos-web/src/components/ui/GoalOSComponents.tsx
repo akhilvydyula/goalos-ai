@@ -14,9 +14,7 @@ export function CoachBubble({ message }: { message: CoachMessage }) {
     <div className={`animate-fade-up flex ${isCoach ? "justify-start" : "justify-end"}`}>
       <div className={`max-w-[90%] ${isCoach ? "" : "text-right"}`}>
         {isCoach && (
-          <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-[#2be7a8]/70">
-            Coach
-          </p>
+          <p className="mb-1 text-xs font-medium text-zinc-500">Coach</p>
         )}
         <div
           className={`px-4 py-3 text-sm leading-relaxed ${
@@ -47,13 +45,9 @@ export function MobileHeader({
   subtitle?: string;
 }) {
   return (
-    <header className="sticky top-0 z-10 shrink-0 border-b border-white/[0.06] bg-[#06070d]/85 px-5 py-3.5 backdrop-blur-xl">
-      {eyebrow && (
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#2be7a8]/80">
-          {eyebrow}
-        </p>
-      )}
-      <h1 className="mt-0.5 text-xl font-semibold tracking-tight text-zinc-50">{title}</h1>
+    <header className="sticky top-0 z-10 shrink-0 border-b border-white/[0.06] bg-zinc-950/95 px-5 py-3.5 backdrop-blur-sm">
+      {eyebrow && <p className="goalos-eyebrow">{eyebrow}</p>}
+      <h1 className="mt-0.5 text-lg font-semibold text-zinc-50">{title}</h1>
       {subtitle && (
         <p className="mt-1 truncate text-xs text-zinc-500">{subtitle}</p>
       )}
@@ -76,7 +70,7 @@ export function MetricCard({
 }) {
   const valueColor =
     accent === "positive"
-      ? "text-[#2be7a8]"
+      ? "text-[#22c55e]"
       : accent === "warning"
         ? "text-amber-400"
         : "text-zinc-100";
@@ -84,7 +78,7 @@ export function MetricCard({
   return (
     <div className="goalos-card p-4">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-[11px] font-medium uppercase tracking-wide text-zinc-500">{label}</p>
+        <p className="text-[11px] font-medium text-zinc-500">{label}</p>
         {icon && <span className="text-zinc-500">{icon}</span>}
       </div>
       <p className={`mt-1.5 text-xl font-semibold tabular-nums ${valueColor}`}>{value}</p>
@@ -109,11 +103,9 @@ export function HeroCard({
   return (
     <div className="goalos-card goalos-card-glow p-5">
       <div className="flex items-start gap-3">
-        <div className="rounded-xl bg-[#2be7a8]/15 p-2.5 text-[#2be7a8]">{icon}</div>
+        <div className="rounded-lg bg-[#22c55e]/15 p-2.5 text-[#22c55e]">{icon}</div>
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-[#68a7ff]/90">
-            {title}
-          </p>
+          <p className="text-xs font-medium text-zinc-500">{title}</p>
           <p className="mt-2 text-sm leading-relaxed text-zinc-300">{body}</p>
           <button type="button" onClick={onAction} className="goalos-btn-primary mt-4 px-4 py-2.5 text-sm">
             {actionLabel}

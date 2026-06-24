@@ -20,15 +20,19 @@
     "lint": "npm run lint --prefix goalos-web",
     "saas:build": "npm run build --workspace=@goalos/shared && npm run db:generate --workspace=@goalos/database && npm run build --workspace=@goalos/database",
     "saas:db:push": "npm run db:push --workspace=@goalos/database",
+    "saas:db:seed": "npm run db:seed --workspace=@goalos/database",
+    "saas:infra": "docker compose up postgres -d",
+    "saas:setup": "npm run saas:build && npm run saas:db:push && npm run saas:db:seed",
     "saas:dev:auth": "npm run dev --workspace=@goalos/auth-service",
     "saas:dev:gateway": "npm run dev --workspace=@goalos/api-gateway",
     "saas:dev:goals": "npm run dev --workspace=@goalos/goals-service",
     "saas:dev:usage": "npm run dev --workspace=@goalos/usage-service",
     "saas:dev:coach": "npm run dev --workspace=@goalos/coach-service",
     "saas:dev:insights": "npm run dev --workspace=@goalos/insights-service",
-    "saas:dev": "concurrently -n gateway,auth,goals,usage,coach,insights -c blue,green,yellow,magenta,cyan,white \"npm run saas:dev:gateway\" \"npm run saas:dev:auth\" \"npm run saas:dev:goals\" \"npm run saas:dev:usage\" \"npm run saas:dev:coach\" \"npm run saas:dev:insights\""
+    "saas:dev": "npx dotenv-cli -e .env -- concurrently -n gateway,auth,goals,usage,coach,insights -c blue,green,yellow,magenta,cyan,white \"npm run saas:dev:gateway\" \"npm run saas:dev:auth\" \"npm run saas:dev:goals\" \"npm run saas:dev:usage\" \"npm run saas:dev:coach\" \"npm run saas:dev:insights\""
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "dotenv-cli": "^8.0.0"
   }
 }

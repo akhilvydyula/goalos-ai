@@ -21,7 +21,7 @@ export function BottomNav({
   onFab: () => void;
 }) {
   return (
-    <nav className="goalos-nav-glass relative z-20 shrink-0 px-4 pb-2 pt-1">
+    <nav className="goalos-nav-glass relative z-20 shrink-0 px-2 pb-2 pt-1">
       <div className="flex items-end justify-between">
         <div className="flex flex-1 justify-around">
           {left.map(({ id, label, icon: Icon }) => (
@@ -32,10 +32,10 @@ export function BottomNav({
         <button
           type="button"
           onClick={onFab}
-          className="-mt-7 mx-2 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#68a7ff] to-[#4d7fff] shadow-lg shadow-[#68a7ff]/35"
+          className="-mt-6 mx-2 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#22c55e] text-zinc-950 shadow-md"
           aria-label="Start focus sprint"
         >
-          <Plus className="h-7 w-7 text-white" strokeWidth={2.5} />
+          <Plus className="h-6 w-6" strokeWidth={2.5} />
         </button>
 
         <div className="flex flex-1 justify-around">
@@ -67,7 +67,7 @@ function NavBtn({
       type="button"
       onClick={() => onChange(id)}
       className={`flex flex-col items-center gap-0.5 px-2 py-2 transition-colors ${
-        isActive ? "text-[#2be7a8]" : "text-zinc-500"
+        isActive ? "text-[#22c55e]" : "text-zinc-500"
       }`}
     >
       <Icon className={`h-5 w-5 ${isActive ? "stroke-[2.5px]" : ""}`} />

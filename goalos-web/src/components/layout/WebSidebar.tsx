@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { TabId, FocusSprint } from "@/lib/types";
 import {
   LayoutDashboard,
@@ -6,6 +7,9 @@ import {
   Sparkles,
   Settings,
   Flame,
+  Shield,
+  LogOut,
+  Building2,
 } from "lucide-react";
 import { sprintsTodayCount } from "@/lib/app-metrics";
 
@@ -23,26 +27,51 @@ export function WebSidebar({
   displayName,
   focusSprints,
   focusSprintOpen,
+  enterprise,
+  orgName,
+  plan,
+  canAdmin,
+  onSignOut,
 }: {
   active: TabId;
   onChange: (tab: TabId) => void;
   displayName?: string;
   focusSprints?: FocusSprint[];
   focusSprintOpen?: boolean;
+  enterprise?: boolean;
+  orgName?: string;
+  plan?: string;
+  canAdmin?: boolean;
+  onSignOut?: () => void;
 }) {
   const sprintsToday = sprintsTodayCount(focusSprints ?? []);
   const focusActive = focusSprintOpen || sprintsToday > 0;
 
   return (
-    <aside className="goalos-sidebar hidden w-56 shrink-0 flex-col lg:flex">
-      <div className="flex items-center gap-2.5 px-4 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#2be7a8] to-[#68a7ff]">
-          <Target className="h-5 w-5 text-[#06070d]" />
+    <aside className="goalos-sidebar hidden w-60 shrink-0 flex-col lg:flex">
+      <div className="flex items-center gap-3 border-b border-white/[0.06] px-5 py-4">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#22c55e]">
+          <Target className="h-4 w-4 text-zinc-950" />
         </div>
-        <span className="text-lg font-bold tracking-tight text-zinc-50">GoalOS</span>
+        <div className="min-w-0">
+          <span className="text-sm font-semibold text-zinc-100">GoalOS</span>
+          {enterprise && orgName ? (
+            <p className="flex items-center gap-1 truncate text-[11px] text-zinc-500">
+              <Building2 className="h-3 w-3 shrink-0" />
+              <span className="truncate">{orgName}</span>
+              {plan && (
+                <span className="shrink-0 rounded border border-white/[0.08] px-1 text-[9px] uppercase">
+                  {plan}
+                </span>
+              )}
+            </p>
+          ) : (
+            <p className="text-[11px] text-zinc-500">Productivity OS</p>
+          )}
+        </div>
       </div>
 
-      <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-2">
+      <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
         {nav.map((item) => {
           const isActive = active === item.id;
           return (
@@ -50,42 +79,55 @@ export function WebSidebar({
               key={item.id}
               type="button"
               onClick={() => onChange(item.id)}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
-                isActive
-                  ? "bg-gradient-to-r from-[#2be7a8]/20 to-[#68a7ff]/10 text-[#2be7a8] shadow-sm ring-1 ring-[#2be7a8]/15"
-                  : "text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200"
-              }`}
+              className={`goalos-nav-item ${isActive ? "goalos-nav-item-active" : ""}`}
             >
               <item.icon className="h-4 w-4 shrink-0" />
               {item.label}
             </button>
           );
         })}
+        {enterprise && canAdmin && (
+          <Link
+            href="/app/admin"
+            className="goalos-nav-item mt-2 border-t border-white/[0.06] pt-3"
+          >
+            <Shield className="h-4 w-4 shrink-0" />
+            Admin
+          </Link>
+        )}
       </nav>
 
       <div className="border-t border-white/[0.06] p-4">
-        <div className="goalos-card flex items-center gap-3 p-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#2be7a8]/30 to-[#68a7ff]/30 text-sm font-bold text-zinc-100">
-            {(displayName ?? "U")[0]}
+        <div className="flex items-center gap-3 rounded-lg border border-white/[0.06] bg-zinc-900/50 px-3 py-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-semibold text-zinc-200">
+            {(displayName ?? "U")[0]?.toUpperCase()}
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-medium text-zinc-200">
               {displayName ?? "User"}
             </p>
-            <p className="flex items-center gap-1 text-[11px] text-[#2be7a8]">
+            <p className="flex items-center gap-1.5 text-xs text-zinc-500">
               <span
-                className={`h-1.5 w-1.5 rounded-full ${focusActive ? "bg-[#2be7a8] animate-pulse" : "bg-zinc-600"}`}
+                className={`h-1.5 w-1.5 rounded-full ${focusActive ? "bg-[#22c55e]" : "bg-zinc-600"}`}
               />
-              {focusSprintOpen ? "Sprint in progress" : focusActive ? "Focus mode on" : "Ready to focus"}
+              {focusSprintOpen ? "Sprint active" : focusActive ? "Focus on" : "Ready"}
             </p>
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 rounded-xl bg-[#2be7a8]/10 px-3 py-2.5">
-          <Flame className="h-4 w-4 text-[#2be7a8]" />
-          <span className="text-xs font-medium text-zinc-300">
-            Sprints today: <span className="text-[#2be7a8]">{sprintsToday}</span>
-          </span>
-        </div>
+        <p className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
+          <Flame className="h-3.5 w-3.5 text-[#22c55e]" />
+          Sprints today: <span className="font-medium text-zinc-300">{sprintsToday}</span>
+        </p>
+        {enterprise && onSignOut && (
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.06] px-3 py-2 text-xs text-zinc-500 transition hover:border-white/[0.1] hover:text-zinc-300"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            Sign out
+          </button>
+        )}
       </div>
     </aside>
   );

@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useGoalOS } from "@/hooks/useGoalOS";
+import { useAuth } from "@/contexts/AuthContext";
+import { isDemoSession } from "@/lib/api/demo-session";
 import { OnboardingFlow } from "./onboarding/OnboardingFlow";
 import { BottomNav } from "./layout/BottomNav";
 import { WebSidebar } from "./layout/WebSidebar";
@@ -33,9 +36,24 @@ const TAB_TITLES: Record<string, string> = {
 
 export type GoalOSVariant = "web" | "mobile";
 
-export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
-  const goalos = useGoalOS();
+export function GoalOSApp({
+  variant = "mobile",
+  enterprise = false,
+}: {
+  variant?: GoalOSVariant;
+  enterprise?: boolean;
+}) {
+  const { session, logout, canAdmin } = useAuth();
+  const router = useRouter();
   const isWeb = variant === "web";
+  const apiToken =
+    enterprise && session && !isDemoSession(session) ? session.accessToken : null;
+  const goalos = useGoalOS({ apiToken });
+
+  const handleSignOut = useCallback(() => {
+    logout();
+    router.push("/login");
+  }, [logout, router]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchKey, setSearchKey] = useState(0);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -125,6 +143,17 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  useEffect(() => {
+    if (!enterprise || !session || !goalos.state || goalos.state.onboarded) return;
+    goalos.persist({
+      ...goalos.state,
+      onboarded: true,
+      displayName: session.user.displayName ?? session.user.email.split("@")[0],
+      demoMode: false,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once when enterprise session attaches
+  }, [enterprise, session?.user.id, goalos.state?.onboarded]);
+
   if (!goalos.state) {
     return (
       <div className="flex h-full min-h-0 flex-1 items-center justify-center">
@@ -184,9 +213,14 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
     </>
   );
 
+  const displayName =
+    enterprise && session
+      ? session.user.displayName ?? session.user.email.split("@")[0]
+      : goalos.state.displayName;
+
   const tabContent = (
     <>
-      <DemoModeBanner state={goalos.state} />
+      {!enterprise && <DemoModeBanner state={goalos.state} />}
       {goalos.activeTab === "today" &&
         (isWeb ? (
           <WebDashboard
@@ -195,6 +229,7 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
             coach={goalos.coach!}
             onStartSprint={() => goalos.openFocusSprint()}
             onOpenCoach={() => goalos.setActiveTab("coach")}
+            onOpenGoal={() => goalos.setActiveTab("goal")}
           />
         ) : (
           <MobileDashboard
@@ -213,6 +248,9 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
           onClassify={goalos.classifyApp}
           onLogUsage={goalos.logAppUsage}
           onIntentGate={(appId) => goalos.setIntentAppId(appId)}
+          onStartSprint={(title, minutes, problemId) =>
+            goalos.openFocusSprint({ title, durationMinutes: minutes, dsaProblemId: problemId })
+          }
         />
       )}
       {goalos.activeTab === "coach" && (
@@ -259,18 +297,26 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
         <WebSidebar
           active={goalos.activeTab}
           onChange={goalos.setActiveTab}
-          displayName={goalos.state.displayName}
+          displayName={displayName}
           focusSprints={goalos.state.focusSprints}
           focusSprintOpen={goalos.focusSprintOpen}
+          enterprise={enterprise}
+          orgName={session?.organization.name}
+          plan={session?.organization.plan}
+          canAdmin={canAdmin}
+          onSignOut={enterprise ? handleSignOut : undefined}
         />
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-6 py-6 lg:px-8">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-zinc-950/30">
+          <div className="mx-auto flex h-full w-full max-w-6xl min-h-0 flex-col px-5 py-5 lg:px-8 lg:py-6">
           {goalos.activeTab === "today" ? (
             <WebTopBar
-              displayName={goalos.state.displayName}
+              displayName={displayName}
               onOpenSearch={openSearch}
               onOpenCoach={openCoach}
               onOpenNotifications={openNotifications}
               unreadNotifications={notificationUnread}
+              enterprise={enterprise}
+              orgName={session?.organization.name}
             />
           ) : goalos.activeTab === "coach" ? (
             <WebPageHeader
@@ -292,6 +338,7 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
           <main className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             {tabContent}
           </main>
+          </div>
         </div>
         {modals}
       </>

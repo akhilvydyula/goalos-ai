@@ -36,21 +36,18 @@ export function OnboardingFlow({
 
   if (step === "welcome") {
     return (
-      <div className="relative flex h-full min-h-0 flex-col justify-between overflow-y-auto px-6 py-8">
-        <div className="goalos-ambient" aria-hidden />
-        <div className="relative z-10">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#2be7a8]/20 bg-[#2be7a8]/10 px-3 py-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-[#2be7a8]" />
-            <span className="text-[11px] font-medium text-[#2be7a8]">Open source · Local-first</span>
+      <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto px-6 py-8">
+        <div>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-md border border-white/[0.08] bg-zinc-900 px-3 py-1.5 text-xs text-zinc-400">
+            <Sparkles className="h-3.5 w-3.5 text-[#22c55e]" />
+            Open source · Local-first
           </div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#2be7a8]/80">
-            GoalOS AI
-          </p>
-          <h1 className="mt-4 text-4xl font-bold leading-[1.1] tracking-tight">
-            <span className="goalos-gradient-text">{TAGLINE}</span>
+          <p className="goalos-eyebrow">Welcome to GoalOS</p>
+          <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-zinc-50">
+            {TAGLINE}
           </h1>
-          <p className="mt-4 text-lg text-zinc-300">
-            Know where your time goes. Know who you are becoming.
+          <p className="mt-4 text-base text-zinc-400">
+            Know where your time goes. Align every session with what you&apos;re building toward.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-zinc-500">
             Your phone is not the problem. Unconscious time is the problem.
@@ -63,7 +60,7 @@ export function OnboardingFlow({
               "AI coach that learns with you",
             ].map((line) => (
               <div key={line} className="flex items-center gap-3 text-sm text-zinc-400">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#2be7a8]/15 text-xs text-[#2be7a8]">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#22c55e]/15 text-xs text-[#22c55e]">
                   ✓
                 </span>
                 {line}
@@ -89,7 +86,7 @@ export function OnboardingFlow({
             onClick={() => persist(createInstantDemoState())}
             className="goalos-btn-secondary flex w-full items-center justify-center gap-2 py-4"
           >
-            <Zap className="h-4 w-4 text-[#68a7ff]" />
+            <Zap className="h-4 w-4 text-zinc-400" />
             Explore demo instantly
           </button>
           <p className="text-center text-[11px] text-zinc-600">
@@ -129,8 +126,8 @@ export function OnboardingFlow({
   return (
     <div className="flex h-full min-h-0 flex-col overflow-y-auto px-6 py-8">
       <div className="goalos-card flex flex-1 flex-col p-6">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2be7a8]/15">
-          <Shield className="h-6 w-6 text-[#2be7a8]" />
+        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#22c55e]/15">
+          <Shield className="h-6 w-6 text-[#22c55e]" />
         </div>
         <h2 className="text-2xl font-semibold">Privacy Promise</h2>
         <p className="mt-4 flex-1 leading-relaxed text-zinc-400">{PRIVACY_PROMISE}</p>
