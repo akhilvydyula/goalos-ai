@@ -111,8 +111,8 @@ export function MobileDashboard({
         <div className="mt-4 space-y-4">
           {usedApps.length === 0 ? (
             <p className="py-6 text-center text-sm text-zinc-500">
-              No usage tracked yet. On Android, GoalOS reads app time automatically. In this web
-              demo, complete a focus sprint to get started.
+              No usage logged yet. Go to <strong className="text-zinc-400">Goals</strong> and tap
+              +15m under an app, or complete a focus sprint.
             </p>
           ) : (
             usedApps.map((app) => {

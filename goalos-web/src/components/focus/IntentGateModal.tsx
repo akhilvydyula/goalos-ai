@@ -31,7 +31,7 @@ export function IntentGateModal({
         <div className="flex items-start justify-between">
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-[#2be7a8]/80">
-              Intent Gate · Agent
+              Intent Gate
             </p>
             <h2 className="mt-1 text-xl font-semibold">Why open {app.name}?</h2>
           </div>

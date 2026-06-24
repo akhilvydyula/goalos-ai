@@ -3,7 +3,7 @@ import { formatMinutes } from "@/lib/demo-data";
 import { IDENTITY_DESCRIPTIONS } from "@/lib/constants";
 import { AppIcon, SectionLabel } from "@/components/ui/AppIcon";
 import { roadmapSummary } from "@/lib/agent";
-import { Target, Map } from "lucide-react";
+import { Target, Map, Plus } from "lucide-react";
 
 const CLASS_OPTIONS: { value: AppClassification; label: string; color: string }[] = [
   { value: "goal-supporting", label: "Goal", color: "bg-emerald-500/20 text-emerald-300" },
@@ -12,17 +12,31 @@ const CLASS_OPTIONS: { value: AppClassification; label: string; color: string }[
   { value: "distracting", label: "Distract", color: "bg-rose-500/20 text-rose-300" },
 ];
 
+const LOG_INCREMENTS = [15, 30, 45] as const;
+
 export function GoalTab({
   state,
   onClassify,
+  onLogUsage,
   onIntentGate,
 }: {
   state: UserState;
   onClassify: (appId: string, c: AppClassification) => void;
+  onLogUsage: (appId: string, minutes: number) => void;
   onIntentGate: (appId: string) => void;
 }) {
   return (
     <div className="space-y-5">
+      {!state.demoMode && (
+        <div className="goalos-card border-[#2be7a8]/20 bg-[#2be7a8]/5 p-4">
+          <p className="text-sm font-medium text-[#2be7a8]">Log your screen time</p>
+          <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+            The web demo cannot read your phone. Tap +15 / +30 / +45 under each app to log time —
+            your Goal Alignment Score updates immediately.
+          </p>
+        </div>
+      )}
+
       <div className="goalos-card goalos-card-glow p-5">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-[#68a7ff]" />
@@ -61,7 +75,7 @@ export function GoalTab({
         <div className="goalos-card p-5">
           <div className="flex items-center gap-2">
             <Map className="h-4 w-4 text-[#2be7a8]" />
-            <SectionLabel>AI roadmap agent</SectionLabel>
+            <SectionLabel>Goal roadmap</SectionLabel>
           </div>
           <p className="mt-2 text-sm text-zinc-400">{roadmapSummary(state.roadmap)}</p>
           <div className="mt-4 space-y-2">
@@ -99,7 +113,7 @@ export function GoalTab({
       )}
 
       <div>
-        <SectionLabel>App classification</SectionLabel>
+        <SectionLabel>Apps & classification</SectionLabel>
         <div className="mt-3 space-y-3">
           {state.apps.map((app) => (
             <div key={app.id} className="goalos-card p-4">
@@ -121,6 +135,20 @@ export function GoalTab({
                   </button>
                 )}
               </div>
+              {!state.demoMode && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {LOG_INCREMENTS.map((mins) => (
+                    <button
+                      key={mins}
+                      type="button"
+                      onClick={() => onLogUsage(app.id, mins)}
+                      className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-[#2be7a8]/30 hover:text-[#2be7a8]"
+                    >
+                      <Plus className="h-3 w-3" />{mins}m
+                    </button>
+                  ))}
+                </div>
+              )}
               <div className="mt-3 flex flex-wrap gap-2">
                 {CLASS_OPTIONS.map((opt) => (
                   <button

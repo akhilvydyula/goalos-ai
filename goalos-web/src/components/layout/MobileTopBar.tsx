@@ -1,20 +1,30 @@
 import type { TabId } from "@/lib/types";
 import { Crown } from "lucide-react";
 
+const MODE_BADGE: Record<"demo" | "live", { label: string; className: string }> = {
+  demo: { label: "Sample data", className: "border-amber-500/30 bg-amber-500/10 text-amber-300" },
+  live: { label: "Web demo", className: "border-[#68a7ff]/30 bg-[#68a7ff]/10 text-[#68a7ff]" },
+};
+
 export function MobileTopBar({
   displayName,
+  demoMode,
   onProfile,
 }: {
   displayName?: string;
+  demoMode?: boolean;
   onProfile?: () => void;
 }) {
+  const mode = demoMode ? MODE_BADGE.demo : MODE_BADGE.live;
+
   return (
     <header className="flex shrink-0 items-center justify-between px-4 pb-2 pt-3">
       <h1 className="text-lg font-bold tracking-tight text-zinc-50">GoalOS AI</h1>
       <div className="flex items-center gap-2">
-        <span className="flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold text-amber-300">
-          <Crown className="h-3 w-3" />
-          Premium
+        <span
+          className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold ${mode.className}`}
+        >
+          {mode.label}
         </span>
         <button
           type="button"

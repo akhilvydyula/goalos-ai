@@ -34,6 +34,14 @@ const nav: NavItem[] = [
   { id: "you", label: "Settings", icon: Settings },
 ];
 
+const PRIMARY_NAV: Record<TabId, string> = {
+  today: "Dashboard",
+  goal: "Goals",
+  coach: "AI Coach",
+  insights: "Insights",
+  you: "Settings",
+};
+
 export function WebSidebar({
   active,
   onChange,
@@ -55,20 +63,22 @@ export function WebSidebar({
       </div>
 
       <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-2">
-        {nav.map((item, i) => {
-          const isActive = item.id !== null && active === item.id;
+          {nav.map((item, i) => {
+          const isActive =
+            item.id !== null && active === item.id && item.label === PRIMARY_NAV[active];
+          const disabled = !item.id || item.label !== PRIMARY_NAV[item.id];
           return (
             <button
               key={`${item.label}-${i}`}
               type="button"
               onClick={() => item.id && onChange(item.id)}
-              disabled={!item.id}
+              disabled={disabled}
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                 isActive
                   ? "bg-gradient-to-r from-[#2be7a8]/20 to-[#68a7ff]/10 text-[#2be7a8] shadow-sm ring-1 ring-[#2be7a8]/15"
-                  : item.id
+                  : !disabled
                     ? "text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200"
-                    : "cursor-default text-zinc-600"
+                    : "cursor-default text-zinc-600 opacity-60"
               }`}
             >
               <item.icon className="h-4 w-4 shrink-0" />
@@ -96,7 +106,7 @@ export function WebSidebar({
         <div className="mt-3 flex items-center gap-2 rounded-xl bg-[#2be7a8]/10 px-3 py-2.5">
           <Flame className="h-4 w-4 text-[#2be7a8]" />
           <span className="text-xs font-medium text-zinc-300">
-            Focus Streak: <span className="text-[#2be7a8]">{streak ?? 0} days</span>
+            Focus sprints today: <span className="text-[#2be7a8]">{streak ?? 0}</span>
           </span>
         </div>
       </div>

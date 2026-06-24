@@ -222,8 +222,8 @@ export function CoachTab({
         />
         <p className="text-center text-[10px] text-zinc-600">
           {aiReady
-            ? "Private · Runs on your device via WebLLM"
-            : "Send a message anytime — smart coach replies instantly"}
+            ? "Optional browser AI (Llama 3.2) — replies only; score still uses rules + your data"
+            : "Smart coach (rules + your data) — tap Load browser AI for optional LLM chat"}
         </p>
       </div>
     </div>

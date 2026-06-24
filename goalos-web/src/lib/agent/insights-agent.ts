@@ -32,10 +32,10 @@ export function enrichWeeklyReport(input: {
         ? "7am – 9am"
         : "9am – 11am";
 
-  const distractionReductionPercent = Math.min(
-    40,
-    Math.max(8, Math.round((base.averageScore - 60) / 2 + (trend > 0 ? 5 : 0)))
-  );
+  const distractionReductionPercent =
+    weeklyHistory.length >= 2 && trend > 0
+      ? Math.min(40, trend)
+      : 0;
 
   const coachLetter = buildCoachLetter({
     identity,

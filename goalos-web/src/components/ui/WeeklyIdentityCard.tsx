@@ -26,9 +26,11 @@ export function WeeklyIdentityCard({
         <p>Goal: {goalTitle}</p>
         <p className="text-[#2be7a8]">Identity: {report.identity}</p>
         <p>Goal Score: {report.averageScore}/100</p>
-        <p>Goal Time: {formatMinutes(report.productiveMinutes)}</p>
-        <p className="text-emerald-400">
-          Distraction Reduced: {report.distractionReductionPercent}%
+        <p>Goal time today: {formatMinutes(report.productiveMinutes)}</p>
+        <p className="mt-1 text-xs text-zinc-600">
+          {report.distractionReductionPercent > 0
+            ? `Score up ${report.distractionReductionPercent} pts vs prior check-in`
+            : "Log actions to build your weekly trend"}
         </p>
       </div>
       {!compact && (

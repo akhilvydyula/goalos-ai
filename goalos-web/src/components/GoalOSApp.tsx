@@ -13,6 +13,7 @@ import { InsightsTab } from "./tabs/InsightsTab";
 import { ProfileTab } from "./tabs/ProfileTab";
 import { IntentGateModal } from "./focus/IntentGateModal";
 import { FocusSprintModal } from "./focus/FocusSprintModal";
+import { DemoModeBanner } from "./ui/DemoModeBanner";
 
 export type GoalOSVariant = "web" | "mobile";
 
@@ -63,6 +64,7 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
 
   const tabContent = (
     <>
+      <DemoModeBanner state={goalos.state} />
       {goalos.activeTab === "today" &&
         (isWeb ? (
           <WebDashboard
@@ -85,6 +87,7 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
         <GoalTab
           state={goalos.state}
           onClassify={goalos.classifyApp}
+          onLogUsage={goalos.logAppUsage}
           onIntentGate={(appId) => goalos.setIntentAppId(appId)}
         />
       )}
@@ -154,6 +157,7 @@ export function GoalOSApp({ variant = "mobile" }: { variant?: GoalOSVariant }) {
     <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#06070d]">
       <MobileTopBar
         displayName={goalos.state.displayName}
+        demoMode={goalos.state.demoMode}
         onProfile={() => goalos.setActiveTab("you")}
       />
       <MobileTabBar active={goalos.activeTab} onChange={goalos.setActiveTab} />

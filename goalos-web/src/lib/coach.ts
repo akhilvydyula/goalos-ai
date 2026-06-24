@@ -81,7 +81,7 @@ export function generateWeeklyReport(input: {
   const { scores, apps, identity, goalTitle } = input;
   const avg = scores.length
     ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
-    : 72;
+    : 0;
 
   const productive = apps
     .filter((a) => a.classification === "goal-supporting")
@@ -91,16 +91,19 @@ export function generateWeeklyReport(input: {
     .filter((a) => a.classification === "distracting")
     .reduce((s, a) => s + a.minutesToday, 0);
 
+  const trend =
+    scores.length >= 2 ? scores[scores.length - 1] - scores[scores.length - 2] : 0;
+
   return {
     weekLabel: "This Week",
     averageScore: avg,
-    productiveMinutes: productive * 7,
-    distractedMinutes: distracted * 7,
+    productiveMinutes: productive,
+    distractedMinutes: distracted,
     bestFocusWindow: "9am – 12pm",
     riskWindow: "10pm – 12am",
     identity,
     nextWeekGoal: `Reach 85+ average score for ${goalTitle}`,
-    distractionReductionPercent: 22,
+    distractionReductionPercent: trend > 0 ? Math.min(40, trend) : 0,
   };
 }
 

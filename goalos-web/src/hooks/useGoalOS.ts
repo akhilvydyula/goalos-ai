@@ -19,6 +19,7 @@ import {
   enrichWeeklyReport,
   type SprintPrefill,
 } from "@/lib/agent";
+import { addAppMinutes, primaryGoalAppId, withScoreSnapshot } from "@/lib/state-sync";
 
 export function useGoalOS() {
   const [state, setState] = useState<UserState | null>(null);
@@ -39,6 +40,13 @@ export function useGoalOS() {
     setState(next);
     saveState(next);
   }, []);
+
+  const commit = useCallback(
+    (next: UserState) => {
+      persist(withScoreSnapshot(next));
+    },
+    [persist]
+  );
 
   const update = useCallback((patch: Partial<UserState>) => {
     setState((prev) => {
@@ -111,8 +119,13 @@ export function useGoalOS() {
       if (merged.navigateTab) {
         setActiveTab(merged.navigateTab as TabId);
       }
-      if (merged.statePatch && state) {
-        persist({ ...state, ...merged.statePatch });
+      if (merged.statePatch) {
+        setState((prev) => {
+          if (!prev) return prev;
+          const next = withScoreSnapshot({ ...prev, ...merged.statePatch });
+          saveState(next);
+          return next;
+        });
       }
     },
     [state, persist]
@@ -180,24 +193,38 @@ export function useGoalOS() {
   const classifyApp = useCallback(
     (appId: string, classification: AppClassification) => {
       if (!state) return;
-      persist({
+      commit({
         ...state,
         apps: state.apps.map((a) => (a.id === appId ? { ...a, classification } : a)),
       });
     },
-    [state, persist]
+    [state, commit]
+  );
+
+  const logAppUsage = useCallback(
+    (appId: string, minutes: number) => {
+      if (!state || minutes <= 0) return;
+      commit(addAppMinutes(state, appId, minutes));
+    },
+    [state, commit]
   );
 
   const recordIntent = useCallback(
     (appId: string, reason: IntentReason, aligned: boolean) => {
       if (!state) return;
-      persist({
+      let next: UserState = {
         ...state,
         intentCheckIns: [
           ...state.intentCheckIns,
           { appId, reason, aligned, timestamp: new Date().toISOString() },
         ],
-      });
+      };
+      if (!aligned) {
+        next = addAppMinutes(next, appId, 10);
+      } else {
+        next = withScoreSnapshot(next);
+      }
+      persist(next);
       setIntentAppId(null);
     },
     [state, persist]
@@ -224,23 +251,18 @@ export function useGoalOS() {
         completedAt: new Date().toISOString(),
         scoreBoost: durationMinutes >= 45 ? 8 : durationMinutes >= 25 ? 5 : 3,
       };
-      const nextState = {
+      let nextState: UserState = {
         ...state,
         focusSprints: [...state.focusSprints, sprint],
         roadmapProgress: Math.min(100, state.roadmapProgress + 5),
       };
-      const newScore = calculateGoalAlignmentScore({
-        apps: nextState.apps,
-        roadmapProgress: nextState.roadmapProgress,
-        intentCheckIns: nextState.intentCheckIns,
-        focusSprints: nextState.focusSprints,
-        energyToday: nextState.energyToday,
-        moodToday: nextState.moodToday,
-      });
-      persist({
-        ...nextState,
-        weeklyHistory: [...state.weeklyHistory, newScore.total],
-      });
+      const goalAppId = primaryGoalAppId(nextState);
+      if (goalAppId) {
+        nextState = addAppMinutes(nextState, goalAppId, durationMinutes);
+      } else {
+        nextState = withScoreSnapshot(nextState);
+      }
+      persist(nextState);
       closeFocusSprint();
       void sendCoachMessage(`I completed a ${durationMinutes}-minute focus sprint`);
     },
@@ -263,6 +285,7 @@ export function useGoalOS() {
     refreshCoachChat,
     webLLM,
     classifyApp,
+    logAppUsage,
     recordIntent,
     intentAppId,
     setIntentAppId,
