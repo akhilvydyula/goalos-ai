@@ -12,12 +12,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const isGithubPages = process.env.GITHUB_PAGES === "true";
+const assetPrefix = isGithubPages ? "/goalos-ai" : "";
+
 export const metadata: Metadata = {
   title: "GoalOS AI — Turn screen time into goal time",
   description:
     "AI-powered productivity operating system that helps you align mobile usage with your goals.",
-  manifest: "/manifest.json",
-  icons: { icon: "/icon.svg", apple: "/icon.svg" },
+  manifest: `${assetPrefix}/manifest.json`,
+  icons: { icon: `${assetPrefix}/icon.svg`, apple: `${assetPrefix}/icon.svg` },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
