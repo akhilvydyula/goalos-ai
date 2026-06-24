@@ -18,6 +18,8 @@
 <p align="center">
   <a href="#quick-start">Quick Start</a> ·
   <a href="https://akhilvydyula.github.io/goalos-ai/">Live Demo</a> ·
+  <a href="https://akhilvydyula.github.io/goalos-ai/web/">Web</a> ·
+  <a href="https://akhilvydyula.github.io/goalos-ai/mobile/">Mobile</a> ·
   <a href="docs/ARCHITECTURE.md">Architecture</a> ·
   <a href="docs/DEPLOYMENT.md">Deploy</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
@@ -114,6 +116,8 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md).
 ## 🔗 Links
 
 - **Live demo:** https://akhilvydyula.github.io/goalos-ai/
+- **Web demo:** https://akhilvydyula.github.io/goalos-ai/web/
+- **Mobile demo:** https://akhilvydyula.github.io/goalos-ai/mobile/
 - **Repository:** https://github.com/akhilvydyula/goalos-ai
 - **Issues:** https://github.com/akhilvydyula/goalos-ai/issues
 - **Web app docs:** [goalos-web/README.md](./goalos-web/README.md)

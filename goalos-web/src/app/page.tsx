@@ -1,10 +1,5 @@
-import { AppShell } from "@/components/layout/AppShell";
-import { GoalOSApp } from "@/components/GoalOSApp";
+import { DemoLanding } from "@/components/demo/DemoLanding";
 
 export default function Home() {
-  return (
-    <AppShell>
-      <GoalOSApp />
-    </AppShell>
-  );
+  return <DemoLanding />;
 }

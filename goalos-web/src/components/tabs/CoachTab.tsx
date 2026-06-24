@@ -21,6 +21,7 @@ export function CoachTab({
   onAction,
   onRefresh,
   onStartSprint,
+  layout = "mobile",
 }: {
   state: UserState;
   coach: CoachRecommendation;
@@ -38,6 +39,7 @@ export function CoachTab({
   onAction: (action: string) => void;
   onRefresh: () => void;
   onStartSprint: () => void;
+  layout?: "web" | "mobile";
 }) {
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -58,7 +60,13 @@ export function CoachTab({
   const aiLoading = webLLM.status === "loading";
 
   return (
-    <div className="flex h-[calc(100dvh-8.5rem)] flex-col lg:h-[calc(90dvh-8.5rem)]">
+    <div
+      className={
+        layout === "web"
+          ? "flex min-h-[28rem] flex-col lg:min-h-[36rem]"
+          : "flex h-[calc(100dvh-8.5rem)] flex-col lg:h-[calc(90dvh-8.5rem)]"
+      }
+    >
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2be7a8]/15">

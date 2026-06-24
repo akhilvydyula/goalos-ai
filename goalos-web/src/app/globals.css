@@ -119,6 +119,11 @@ body {
   }
 }
 
+.goalos-web-frame {
+  width: 100%;
+  min-height: 0;
+}
+
 @media (min-width: 1024px) {
   .goalos-phone-frame {
     min-height: 844px;

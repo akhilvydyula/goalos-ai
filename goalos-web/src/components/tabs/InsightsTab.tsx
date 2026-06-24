@@ -6,15 +6,17 @@ export function InsightsTab({
   state,
   score,
   weeklyReport,
+  layout = "mobile",
 }: {
   state: UserState;
   score: ScoreBreakdown;
   weeklyReport: WeeklyReport;
+  layout?: "web" | "mobile";
 }) {
   const topApps = [...state.apps].sort((a, b) => b.minutesToday - a.minutesToday).slice(0, 5);
 
   return (
-    <div className="space-y-5">
+    <div className={layout === "web" ? "grid gap-5 lg:grid-cols-2" : "space-y-5"}>
       <WeeklyIdentityCard report={weeklyReport} goalTitle={state.goal?.title ?? "Your Goal"} />
 
       <div className="goalos-card p-4">

@@ -1,5 +1,6 @@
 import { TAGLINE } from "@/lib/constants";
 import { Target, Sparkles, Shield, Zap } from "lucide-react";
+import { DemoSwitcher } from "./WebShell";
 
 const features = [
   {
@@ -24,13 +25,13 @@ const features = [
   },
 ];
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function MobileDemoShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="goalos-page-bg min-h-dvh">
-      <div className="mx-auto flex min-h-dvh max-w-7xl flex-col items-center gap-8 px-0 py-0 lg:flex-row lg:items-center lg:justify-center lg:gap-10 lg:px-8 lg:py-10">
+      <div className="mx-auto flex min-h-dvh max-w-7xl flex-col items-center gap-6 px-4 py-4 lg:flex-row lg:items-center lg:justify-center lg:gap-10 lg:px-8 lg:py-10">
         <aside className="hidden max-w-xs shrink-0 lg:block xl:max-w-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#2be7a8]/80">
-            GoalOS AI
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#68a7ff]/80">
+            Mobile demo
           </p>
           <h2 className="mt-3 text-3xl font-bold leading-tight text-zinc-50 xl:text-4xl">
             <span className="goalos-gradient-text">{TAGLINE}</span>
@@ -57,7 +58,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </aside>
 
-        <div className="goalos-phone-frame w-full shrink-0">{children}</div>
+        <div className="flex w-full max-w-[430px] shrink-0 flex-col items-center gap-3">
+          <div className="hidden w-full justify-end lg:flex">
+            <DemoSwitcher active="mobile" />
+          </div>
+          <div className="goalos-phone-frame w-full">{children}</div>
+        </div>
 
         <aside className="hidden max-w-xs shrink-0 lg:block xl:max-w-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
@@ -99,3 +105,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+/** @deprecated Use MobileDemoShell */
+export const AppShell = MobileDemoShell;

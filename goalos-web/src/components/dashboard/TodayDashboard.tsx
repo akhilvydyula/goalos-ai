@@ -10,12 +10,14 @@ export function TodayDashboard({
   coach,
   onStartSprint,
   onIntentGate,
+  layout = "mobile",
 }: {
   state: UserState;
   score: ScoreBreakdown;
   coach: CoachRecommendation;
   onStartSprint: () => void;
   onIntentGate: (appId: string) => void;
+  layout?: "web" | "mobile";
 }) {
   const productive = state.apps
     .filter((a) => a.classification === "goal-supporting")
@@ -29,18 +31,20 @@ export function TodayDashboard({
     .sort((a, b) => b.minutesToday - a.minutesToday)[0];
 
   return (
-    <div className="space-y-4">
-      <ScoreCard score={score} />
+    <div className={layout === "web" ? "space-y-5" : "space-y-4"}>
+      <div className={layout === "web" ? "grid gap-5 lg:grid-cols-2" : "contents"}>
+        <ScoreCard score={score} />
 
-      <HeroCard
-        title="AI Next Best Action"
-        body={coach.nextAction}
-        actionLabel="Start Focus Sprint"
-        onAction={onStartSprint}
-        icon={<Zap className="h-5 w-5" />}
-      />
+        <HeroCard
+          title="AI Next Best Action"
+          body={coach.nextAction}
+          actionLabel="Start Focus Sprint"
+          onAction={onStartSprint}
+          icon={<Zap className="h-5 w-5" />}
+        />
+      </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className={`grid gap-3 ${layout === "web" ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2"}`}>
         <MetricCard label="Goal time" value={formatMinutes(productive)} accent="positive" />
         <MetricCard label="Distracted" value={formatMinutes(distracted)} accent="warning" />
       </div>
