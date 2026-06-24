@@ -19,3 +19,5 @@ node_modules/
 out/
 **/build/
 **/.gradle/
+packages/*/dist/
+services/*/dist/

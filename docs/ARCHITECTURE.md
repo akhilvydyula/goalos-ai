@@ -126,6 +126,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for hosting options.
 
 ## Future roadmap (not in OSS yet)
 
+- **Enterprise SaaS platform** — [SAAS_ARCHITECTURE.md](./SAAS_ARCHITECTURE.md) (microservices MVP scaffold in repo)
 - Supabase auth + sync
 - Server-side LLM coach API
 - iOS client

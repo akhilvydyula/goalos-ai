@@ -1,0 +1,127 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: goalos
+      POSTGRES_PASSWORD: goalos
+      POSTGRES_DB: goalos
+    ports:
+      - "5432:5432"
+    volumes:
+      - goalos_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U goalos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+      args:
+        SERVICE: auth-service
+    environment:
+      DATABASE_URL: postgresql://goalos:goalos@postgres:5432/goalos
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      PORT: 4001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4001:4001"
+
+  goals-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+      args:
+        SERVICE: goals-service
+    environment:
+      DATABASE_URL: postgresql://goalos:goalos@postgres:5432/goalos
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      PORT: 4002
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4002:4002"
+
+  usage-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+      args:
+        SERVICE: usage-service
+    environment:
+      DATABASE_URL: postgresql://goalos:goalos@postgres:5432/goalos
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      PORT: 4003
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4003:4003"
+
+  coach-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+      args:
+        SERVICE: coach-service
+    environment:
+      DATABASE_URL: postgresql://goalos:goalos@postgres:5432/goalos
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      PORT: 4004
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4004:4004"
+
+  insights-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+      args:
+        SERVICE: insights-service
+    environment:
+      DATABASE_URL: postgresql://goalos:goalos@postgres:5432/goalos
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      PORT: 4005
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4005:4005"
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+      args:
+        SERVICE: api-gateway
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      PORT: 4000
+      AUTH_SERVICE_URL: http://auth-service:4001
+      GOALS_SERVICE_URL: http://goals-service:4002
+      USAGE_SERVICE_URL: http://usage-service:4003
+      COACH_SERVICE_URL: http://coach-service:4004
+      INSIGHTS_SERVICE_URL: http://insights-service:4005
+    depends_on:
+      - auth-service
+      - goals-service
+      - usage-service
+      - coach-service
+      - insights-service
+    ports:
+      - "4000:4000"
+
+volumes:
+  goalos_pg:

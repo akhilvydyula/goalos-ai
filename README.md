@@ -136,5 +136,6 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md).
 - **Mobile demo:** https://akhilvydyula.github.io/oss-goalos-ai/mobile/
 - **Repository:** https://github.com/akhilvydyula/oss-goalos-ai
 - **Issues:** https://github.com/akhilvydyula/oss-goalos-ai/issues
+- **SaaS architecture:** [docs/SAAS_ARCHITECTURE.md](docs/SAAS_ARCHITECTURE.md)
 - **Web app docs:** [goalos-web/README.md](./goalos-web/README.md)
 - **Android docs:** [goalos-android/README.md](./goalos-android/README.md)

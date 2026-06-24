@@ -1,0 +1,255 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum PlanTier {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum AppClassification {
+  GOAL_SUPPORTING @map("goal-supporting")
+  MIXED           @map("mixed")
+  NEUTRAL         @map("neutral")
+  DISTRACTING     @map("distracting")
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  plan      PlanTier @default(FREE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members       OrganizationMember[]
+  goals         Goal[]
+  trackedApps   TrackedApp[]
+  usageEvents   UsageEvent[]
+  intentCheckIns IntentCheckIn[]
+  focusSprints  FocusSprint[]
+  coachMessages CoachMessage[]
+  scoreSnapshots ScoreSnapshot[]
+  auditLogs     AuditLog[]
+  subscriptions Subscription?
+
+  @@map("organizations")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships OrganizationMember[]
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
+
+  @@map("users")
+}
+
+model OrganizationMember {
+  id        String     @id @default(uuid())
+  orgId     String
+  userId    String
+  role      MemberRole @default(MEMBER)
+  joinedAt  DateTime   @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, userId])
+  @@index([userId])
+  @@map("organization_members")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model Subscription {
+  id               String   @id @default(uuid())
+  orgId            String   @unique
+  stripeCustomerId String?
+  stripeSubId      String?
+  status           String   @default("trialing")
+  seatLimit        Int      @default(5)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model Goal {
+  id                     String   @id @default(uuid())
+  orgId                  String
+  template               String
+  title                  String
+  timelineWeeks          Int
+  dailyCommitmentMinutes Int
+  focusWindow            String
+  painPoint              String   @default("")
+  motivation             String   @default("")
+  roadmapProgress        Int      @default(0)
+  energyToday            Int      @default(7)
+  moodToday              Int      @default(7)
+  dnaJson                Json?
+  profileJson            Json?
+  active                 Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  organization Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  milestones   RoadmapMilestone[]
+
+  @@index([orgId])
+  @@map("goals")
+}
+
+model RoadmapMilestone {
+  id            String  @id @default(uuid())
+  goalId        String
+  week          Int
+  title         String
+  minutesPerDay Int
+  completed     Boolean @default(false)
+
+  goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
+  @@map("roadmap_milestones")
+}
+
+model TrackedApp {
+  id             String            @id @default(uuid())
+  orgId          String
+  name           String
+  packageName    String
+  classification AppClassification @default(NEUTRAL)
+  minutesToday   Int               @default(0)
+  sessions       Int               @default(0)
+  lastOpenedHour Int               @default(12)
+  updatedAt      DateTime          @updatedAt
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, packageName])
+  @@index([orgId])
+  @@map("tracked_apps")
+}
+
+model UsageEvent {
+  id             String            @id @default(uuid())
+  orgId          String
+  packageName    String
+  appName        String
+  classification AppClassification
+  minutes        Int
+  sessions       Int               @default(1)
+  lastOpenedHour Int?
+  recordedAt     DateTime          @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, recordedAt])
+  @@map("usage_events")
+}
+
+model IntentCheckIn {
+  id        String   @id @default(uuid())
+  orgId     String
+  appId     String
+  reason    String
+  aligned   Boolean
+  createdAt DateTime @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, createdAt])
+  @@map("intent_check_ins")
+}
+
+model FocusSprint {
+  id              String    @id @default(uuid())
+  orgId           String
+  title           String
+  durationMinutes Int
+  startedAt       DateTime?
+  completedAt     DateTime?
+  scoreBoost      Int       @default(5)
+  createdAt       DateTime  @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, createdAt])
+  @@map("focus_sprints")
+}
+
+model CoachMessage {
+  id        String   @id @default(uuid())
+  orgId     String
+  role      String
+  text      String
+  createdAt DateTime @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, createdAt])
+  @@map("coach_messages")
+}
+
+model ScoreSnapshot {
+  id        String   @id @default(uuid())
+  orgId     String
+  total     Int
+  breakdown Json
+  createdAt DateTime @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, createdAt])
+  @@map("score_snapshots")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  orgId     String
+  userId    String?
+  action    String
+  resource  String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, createdAt])
+  @@map("audit_logs")
+}

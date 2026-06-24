@@ -1,0 +1,23 @@
+{
+  "name": "@goalos/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.5.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
