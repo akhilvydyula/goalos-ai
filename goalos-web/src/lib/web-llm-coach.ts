@@ -6,10 +6,24 @@ import type { MLCEngineInterface } from "@mlc-ai/web-llm";
 /** Smallest prebuilt model — ~600MB first download, cached in browser after. */
 export const WEB_LLM_MODEL = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 
-export type WebLLMStatus = "idle" | "loading" | "ready" | "error" | "unsupported";
+export type WebLLMStatus =
+  | "checking"
+  | "idle"
+  | "loading"
+  | "ready"
+  | "error"
+  | "unsupported";
 
-export function isWebGPUSupported(): boolean {
-  return typeof navigator !== "undefined" && "gpu" in navigator;
+export async function checkWebGPUSupport(): Promise<boolean> {
+  if (typeof navigator === "undefined" || !("gpu" in navigator)) return false;
+  try {
+    const gpu = navigator.gpu as { requestAdapter: () => Promise<unknown | null> } | undefined;
+    if (!gpu) return false;
+    const adapter = await gpu.requestAdapter();
+    return adapter !== null;
+  } catch {
+    return false;
+  }
 }
 
 export function buildCoachSystemPrompt(
@@ -40,23 +54,30 @@ Never mention API keys, servers, or that you are a language model.`;
 }
 
 let enginePromise: Promise<MLCEngineInterface> | null = null;
+let loadProgressCallback: ((progress: number, text: string) => void) | undefined;
 
 export async function loadWebLLMEngine(
   onProgress?: (progress: number, text: string) => void
 ): Promise<MLCEngineInterface> {
-  if (!isWebGPUSupported()) {
-    throw new Error("WebGPU is not supported in this browser. Use Chrome or Edge.");
+  const supported = await checkWebGPUSupport();
+  if (!supported) {
+    throw new Error("WebGPU is not supported. Use Chrome or Edge on desktop.");
   }
+
+  if (onProgress) loadProgressCallback = onProgress;
 
   if (!enginePromise) {
     enginePromise = (async () => {
       const { CreateMLCEngine } = await import("@mlc-ai/web-llm");
       return CreateMLCEngine(WEB_LLM_MODEL, {
         initProgressCallback: (report) => {
-          onProgress?.(report.progress, report.text);
+          loadProgressCallback?.(report.progress, report.text);
         },
       });
-    })();
+    })().catch((err) => {
+      enginePromise = null;
+      throw err;
+    });
   }
 
   return enginePromise;
@@ -64,6 +85,7 @@ export async function loadWebLLMEngine(
 
 export function resetWebLLMEngine(): void {
   enginePromise = null;
+  loadProgressCallback = undefined;
 }
 
 export async function generateCoachReplyWithWebLLM(input: {

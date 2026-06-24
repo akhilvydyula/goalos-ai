@@ -5,13 +5,34 @@ import type { CoachMessage } from "@/lib/types";
 
 export function CoachBubble({ message }: { message: CoachMessage }) {
   const isCoach = message.role === "coach";
+  const time = new Date(message.timestamp).toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
   return (
-    <div
-      className={`animate-fade-up max-w-[88%] px-4 py-3 text-sm leading-relaxed ${
-        isCoach ? "coach-bubble-coach mr-auto text-zinc-200" : "coach-bubble-user ml-auto text-zinc-100"
-      }`}
-    >
-      {message.text}
+    <div className={`animate-fade-up flex ${isCoach ? "justify-start" : "justify-end"}`}>
+      <div className={`max-w-[90%] ${isCoach ? "" : "text-right"}`}>
+        {isCoach && (
+          <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-[#2be7a8]/70">
+            Coach
+          </p>
+        )}
+        <div
+          className={`px-4 py-3 text-sm leading-relaxed ${
+            isCoach
+              ? "coach-bubble-coach text-zinc-200"
+              : "coach-bubble-user ml-auto text-zinc-100"
+          }`}
+        >
+          {message.text.split("\n").map((line, i) => (
+            <p key={i} className={i > 0 ? "mt-2" : ""}>
+              {line}
+            </p>
+          ))}
+        </div>
+        <p className={`mt-1 text-[10px] text-zinc-600 ${isCoach ? "" : "text-right"}`}>{time}</p>
+      </div>
     </div>
   );
 }
@@ -105,21 +126,21 @@ export function CoachChatInput({
   disabled?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-2 pl-4">
+    <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-2 pl-4 ring-1 ring-white/[0.02] transition focus-within:border-[#2be7a8]/30 focus-within:ring-[#2be7a8]/10">
       <Sparkles className="h-4 w-4 shrink-0 text-[#2be7a8]/70" />
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && !disabled && value.trim() && onSend()}
-        placeholder="Ask your coach..."
-        className="min-w-0 flex-1 bg-transparent text-sm text-zinc-200 placeholder:text-zinc-600 outline-none"
+        placeholder="Ask about your score, focus, or tomorrow…"
+        className="min-w-0 flex-1 bg-transparent py-1.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none"
       />
       <button
         type="button"
         onClick={onSend}
         disabled={disabled || !value.trim()}
-        className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2be7a8]/20 text-[#2be7a8] transition hover:bg-[#2be7a8]/30 disabled:opacity-40"
+        className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#2be7a8] to-[#1bc98a] text-[#06070d] transition hover:opacity-90 disabled:opacity-40"
         aria-label="Send message"
       >
         <Send className="h-4 w-4" />

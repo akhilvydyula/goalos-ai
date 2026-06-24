@@ -26,8 +26,10 @@ export function BottomNav({
               key={id}
               type="button"
               onClick={() => onChange(id)}
-              className={`flex flex-col items-center gap-0.5 rounded-xl px-2.5 py-2 transition-colors ${
-                isActive ? "text-[#2be7a8]" : "text-zinc-500 hover:text-zinc-300"
+              className={`flex flex-col items-center gap-0.5 rounded-xl px-2.5 py-2 transition-all ${
+                isActive
+                  ? "text-[#2be7a8]"
+                  : "text-zinc-500 hover:bg-white/[0.04] hover:text-zinc-300"
               }`}
             >
               <Icon className={`h-5 w-5 ${isActive ? "stroke-[2.5px]" : ""}`} />
