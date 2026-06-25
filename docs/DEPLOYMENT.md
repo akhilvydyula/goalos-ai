@@ -1,5 +1,7 @@
 # Deployment
 
+**Production:** https://oss-goalos-ai.akhilvydyula1111.workers.dev/
+
 GoalOS web is a **static export** deployed to **Cloudflare Workers Static Assets** (`goalos-web/out`).
 
 ## Workers Builds (your current setup)
@@ -61,8 +63,10 @@ Uses `goalos-web/wrangler.toml` with `directory = "./out"` (avoids monorepo quir
 
 ### Smoke test
 
+Production base: https://oss-goalos-ai.akhilvydyula1111.workers.dev/
+
 - [ ] `/` — landing page
-- [ ] `/login/` — demo sign-in
+- [ ] `/login/` — demo sign-in (`admin@demo.goalos` / `Demo1234!`)
 - [ ] `/web/` — product demo
 - [ ] `/app/` — enterprise shell
 

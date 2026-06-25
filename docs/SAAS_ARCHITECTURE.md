@@ -222,4 +222,4 @@ See `packages/database/prisma/schema.prisma` for the full schema including:
 
 ## What stays local-first in OSS
 
-The open-source Cloudflare Pages demo remains **fully offline** — no account required. The SaaS platform is an optional upgrade path for teams needing sync, admin, billing, and compliance.
+The open-source Cloudflare Workers demo remains **fully offline** — no account required. The SaaS platform is an optional upgrade path for teams needing sync, admin, billing, and compliance.

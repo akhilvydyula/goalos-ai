@@ -4,7 +4,7 @@
 |----------|-------------|
 | [Getting Started](./GETTING_STARTED.md) | Run web & Android locally |
 | [Architecture](./ARCHITECTURE.md) | System design, scoring, data flow |
-| [Deployment](./DEPLOYMENT.md) | Cloudflare Pages, Android releases |
+| [Deployment](./DEPLOYMENT.md) | Cloudflare Workers, Android releases |
 
 ## Repository guides
 

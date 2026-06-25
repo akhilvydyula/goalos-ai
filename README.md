@@ -10,13 +10,15 @@
 
 <p align="center">
   <a href="https://github.com/akhilvydyula/oss-goalos-ai/actions/workflows/ci.yml"><img src="https://github.com/akhilvydyula/oss-goalos-ai/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <img src="https://img.shields.io/badge/deploy-Cloudflare%20Pages-F38020?style=flat&logo=cloudflare" alt="Cloudflare Pages" />
+  <a href="https://oss-goalos-ai.akhilvydyula1111.workers.dev/"><img src="https://img.shields.io/badge/demo-live-F38020?style=flat&logo=cloudflare" alt="Live demo" /></a>
+  <img src="https://img.shields.io/badge/deploy-Cloudflare%20Workers-F38020?style=flat&logo=cloudflare" alt="Cloudflare Workers" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
   <a href="https://github.com/akhilvydyula/oss-goalos-ai/issues"><img src="https://img.shields.io/github/issues/akhilvydyula/oss-goalos-ai" alt="Issues" /></a>
 </p>
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> ·
+  <a href="https://oss-goalos-ai.akhilvydyula1111.workers.dev/">Live demo</a> ·
   <a href="docs/ARCHITECTURE.md">Architecture</a> ·
   <a href="docs/DEPLOYMENT.md">Deploy (Cloudflare)</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
@@ -27,16 +29,49 @@
 ## 📸 Preview
 
 <p align="center">
-  <img src="goalos-web/public/media/web-preview.png" alt="GoalOS web dashboard" width="720" />
+  <img src="goalos-web/public/media/readme/hero-banner.png" alt="GoalOS AI — Turn screen time into goal time" width="900" />
+</p>
+
+<p align="center"><strong>Turn screen time into goal time.</strong> Local-first · Private · Open source.</p>
+
+### 🎬 Promo videos
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**Quick teaser** (~8s)
+
+<video src="goalos-web/public/media/readme/goalos-promo.mp4" width="100%" autoplay muted loop playsinline></video>
+
+</td>
+<td width="50%" valign="top">
+
+**Cinematic promo** (~49s)
+
+<video src="goalos-web/public/media/readme/goalos-cinematic-promo.mp4" width="100%" controls playsinline poster="goalos-web/public/media/readme/hero-banner.png"></video>
+
+</td>
+</tr>
+</table>
+
+### 🖼 Product gallery
+
+<p align="center">
+  <img src="goalos-web/public/media/readme/hero-chaos.png" alt="Distraction vs focus" width="440" />
+  &nbsp;
+  <img src="goalos-web/public/media/readme/app-dashboard.png" alt="Web dashboard" width="440" />
 </p>
 
 <p align="center">
-  <img src="goalos-web/public/media/coach-preview.png" alt="GoalOS AI Coach" width="320" />
+  <img src="goalos-web/public/media/readme/app-coach.png" alt="AI Coach" width="290" />
   &nbsp;
-  <img src="goalos-web/public/media/android-preview.png" alt="GoalOS Android app" width="320" />
+  <img src="goalos-web/public/media/readme/app-mobile.png" alt="Mobile demo" width="290" />
+  &nbsp;
+  <img src="goalos-web/public/media/readme/app-android.png" alt="Android app" width="290" />
 </p>
 
-<p align="center"><em>Web dashboard · AI Coach · Android companion</em></p>
+<p align="center"><em>Distraction montage · Dashboard · AI Coach · Mobile · Android</em></p>
 
 ---
 
@@ -73,7 +108,7 @@ cd oss-goalos-ai
 npm run dev
 ```
 
-Open **http://localhost:3000**
+Open **http://localhost:3000** — or try the [**live demo**](https://oss-goalos-ai.akhilvydyula1111.workers.dev/) (demo login: `admin@demo.goalos` / `Demo1234!`)
 
 ### Android
 
@@ -100,7 +135,7 @@ Goal Setup → Productivity DNA → Usage Tracking → Alignment Score
 |-----|-------------|
 | [Getting Started](./docs/GETTING_STARTED.md) | Install & run web + Android |
 | [Architecture](./docs/ARCHITECTURE.md) | System design, data flow, scoring |
-| [Deployment](./docs/DEPLOYMENT.md) | Cloudflare Pages, Android releases |
+| [Deployment](./docs/DEPLOYMENT.md) | Cloudflare Workers, Android releases |
 | [Contributing](./CONTRIBUTING.md) | How to contribute |
 | [Code of Conduct](./CODE_OF_CONDUCT.md) | Community guidelines |
 | [Security](./SECURITY.md) | Vulnerability reporting |
@@ -110,7 +145,7 @@ Goal Setup → Productivity DNA → Usage Tracking → Alignment Score
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
 | [**CI**](./.github/workflows/ci.yml) | Push / PR to `main` | Web lint + build, Android APK |
-| [**Cloudflare Pages**](./.github/workflows/cloudflare-pages.yml) | Push to `main` (optional) | Deploy web to Cloudflare |
+| [**Cloudflare Workers**](./docs/DEPLOYMENT.md) | Push to `main` | Deploy web via Workers Builds |
 | [**Release**](./.github/workflows/release.yml) | Tag `v*.*.*` | GitHub Release + APK artifact |
 
 ## 🤝 Contributing
@@ -128,9 +163,10 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## 🔗 Links
 
-- **Live demo:** https://akhilvydyula.github.io/oss-goalos-ai/
-- **Web demo:** https://akhilvydyula.github.io/oss-goalos-ai/web/
-- **Mobile demo:** https://akhilvydyula.github.io/oss-goalos-ai/mobile/
+- **Live demo:** https://oss-goalos-ai.akhilvydyula1111.workers.dev/
+- **Web product:** https://oss-goalos-ai.akhilvydyula1111.workers.dev/web/
+- **Mobile demo:** https://oss-goalos-ai.akhilvydyula1111.workers.dev/mobile/
+- **Enterprise app:** https://oss-goalos-ai.akhilvydyula1111.workers.dev/app/
 - **Repository:** https://github.com/akhilvydyula/oss-goalos-ai
 - **Issues:** https://github.com/akhilvydyula/oss-goalos-ai/issues
 - **SaaS architecture:** [docs/SAAS_ARCHITECTURE.md](docs/SAAS_ARCHITECTURE.md)

@@ -18,7 +18,10 @@ What it does:
 100% open source. MIT license. Local-first — your data stays on your device.
 
 Try the live demo:
-https://github.com/akhilvydyula/oss-goalos-ai
+https://oss-goalos-ai.akhilvydyula1111.workers.dev/
+
+Demo login: admin@demo.goalos / Demo1234!
+Repo: https://github.com/akhilvydyula/oss-goalos-ai
 
 If you're building in public, chasing focus, or prepping for interviews — this is for you.
 
@@ -40,7 +43,7 @@ I open-sourced the productivity app I wish existed:
 ✅ Focus sprints + intent checks
 ✅ Web + Android
 
-Demo: https://github.com/akhilvydyula/oss-goalos-ai
+Demo: https://oss-goalos-ai.akhilvydyula1111.workers.dev/
 
 MIT · free forever
 
@@ -56,5 +59,5 @@ MIT · free forever
 ## Posting tips
 
 - Post Tuesday–Thursday, 8–10 AM your timezone
-- First comment: link to repo + "Demo runs in browser, no signup"
+- First comment: live demo https://oss-goalos-ai.akhilvydyula1111.workers.dev/ + repo link
 - Tag 2–3 builders if relevant (optional)

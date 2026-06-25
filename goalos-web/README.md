@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> ·
+  <a href="https://oss-goalos-ai.akhilvydyula1111.workers.dev/">Live demo</a> ·
   <a href="#features">Features</a> ·
   <a href="#architecture">Architecture</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
@@ -42,7 +43,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) or the [live demo](https://oss-goalos-ai.akhilvydyula1111.workers.dev/).
 
 ### Production build
 
@@ -50,22 +51,31 @@ Open [http://localhost:3000](http://localhost:3000).
 npm run build
 ```
 
-Static output is in `out/` — deployed automatically via Cloudflare Pages. See [Deployment](../docs/DEPLOYMENT.md).
+Static output is in `out/` — deployed to [Cloudflare Workers](https://oss-goalos-ai.akhilvydyula1111.workers.dev/). See [Deployment](../docs/DEPLOYMENT.md).
 
-## Screenshots & walkthrough
+## Screenshots & promo media
 
-| Preview | File |
-|---------|------|
-| Web dashboard | `public/media/web-preview.png` |
-| AI Coach | `public/media/coach-preview.png` |
-| Mobile demo | `public/media/mobile-preview.png` |
-| Android app | `public/media/android-preview.png` |
-
-The [landing page](http://localhost:3000) includes an auto-playing **product walkthrough** (image reel) and screenshot gallery.
+| Asset | Path |
+|-------|------|
+| Hero banner | `public/media/readme/hero-banner.png` |
+| Quick teaser video (~8s) | `public/media/readme/goalos-promo.mp4` |
+| Cinematic promo (~49s) | `public/media/readme/goalos-cinematic-promo.mp4` |
+| Web dashboard | `public/media/readme/app-dashboard.png` |
+| AI Coach | `public/media/readme/app-coach.png` |
+| Mobile demo | `public/media/readme/app-mobile.png` |
+| Android app | `public/media/readme/app-android.png` |
 
 <p align="center">
-  <img src="public/media/web-preview.png" alt="Web dashboard" width="640" />
+  <img src="public/media/readme/hero-banner.png" alt="GoalOS AI" width="800" />
 </p>
+
+<p align="center">
+  <video src="public/media/readme/goalos-promo.mp4" width="640" autoplay muted loop playsinline></video>
+</p>
+
+The [landing page](http://localhost:3000) includes an auto-playing product walkthrough and screenshot gallery.
+
+Regenerate promo videos: `npm run build:cinematic-promo` · Import concept art: `python scripts/import-readme-media.py <folder>`
 
 ## Architecture
 
