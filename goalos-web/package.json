@@ -22,6 +22,7 @@
     "build": "next build",
     "build:cloudflare": "npm run build",
     "build:promo-video": "python scripts/build-promo-video.py",
+    "build:cinematic-promo": "python scripts/build-cinematic-promo.py",
     "start": "next start",
     "lint": "eslint"
   },
