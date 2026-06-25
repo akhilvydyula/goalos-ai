@@ -21,6 +21,7 @@
     "prebuild": "node scripts/write-manifest.mjs",
     "build": "next build",
     "build:cloudflare": "npm run build",
+    "build:promo-video": "python scripts/build-promo-video.py",
     "start": "next start",
     "lint": "eslint"
   },

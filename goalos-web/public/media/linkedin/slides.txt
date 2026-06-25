@@ -1,0 +1,11 @@
+file 'web-preview.png'
+duration 3
+file 'coach-preview.png'
+duration 3
+file 'mobile-preview.png'
+duration 3
+file 'android-preview.png'
+duration 3
+file 'goalos-linkedin-banner.png'
+duration 4
+file 'goalos-linkedin-banner.png'
